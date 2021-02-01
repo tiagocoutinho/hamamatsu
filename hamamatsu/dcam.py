@@ -1,5 +1,6 @@
 import enum
 import ctypes
+import logging
 import weakref
 import functools
 import contextlib
@@ -236,6 +237,16 @@ class DCAM_PIXELTYPE(enum.IntEnum):
         elif self is self.NONE:
             return 0
 
+    def dtype(self):
+        if self is self.MONO8:
+            return numpy.uint8
+        elif self is self.MONO16:
+            return numpy.uint16
+        elif self is self.NONE:
+            return 0
+        else:
+            return None
+
 
 class DCAMCAP_START(enum.IntEnum):
     SEQUENCE = -1
@@ -300,6 +311,16 @@ class DCAMPROPUNIT(enum.IntEnum):
     MICROMETER     = 7            # for length
     NONE           = 0            # no unit
 
+    def to_SI(self, value):
+        if self in {self.SECOND, self.KELVIN, self.METERPERSECOND, self.NONE, self.PERSECOND}:
+            return value
+        elif self == self.CELSIUS:
+            return value + 273.15
+        elif self == self.MICROMETER:
+            return value * 1E-6
+        elif self == self.DEGREE:
+            return numpy.radians(value)
+        return value
 
 class DCAMPROPMODEVALUE(enum.IntEnum):
     # DCAM_IDPROP_SENSORMODE
@@ -1278,7 +1299,8 @@ class FrameStream:
     def __init__(self, device, nb_frames):
         self.device = device
         self.nb_frames = nb_frames
-        self.device._buf_alloc(self.nb_frames)
+        self.device._buf_alloc(nb_frames)
+        self.stream = device.frame_stream(nb_frames)
 
     def __enter__(self):
         return self
@@ -1286,8 +1308,14 @@ class FrameStream:
     def __exit__(self, exc_type, exc_value, tb):
         self.device._buf_release()
 
+    def __len__(self):
+        return self.nb_frames
+
     def __iter__(self):
-        return self.device.frame_stream(self.nb_frames)
+        return self
+
+    def __next__(self):
+        return next(self.stream)
 
 
 class EventStream:
@@ -1299,6 +1327,7 @@ class EventStream:
         self.mask = mask
         self.timeout = timeout
         self._handle = device._wait_open()
+        self.stream = self.device.event_stream(self.mask.value, self.timeout, self._handle)
 
     def __enter__(self):
         return self
@@ -1307,7 +1336,10 @@ class EventStream:
         self.close()
 
     def __iter__(self):
-        return self.device.event_stream(self.mask.value, self.timeout, self._handle)
+        return self
+
+    def __next__(self):
+        return next(self.stream)
 
     def abort(self):
         if self._handle is not None:
@@ -1329,6 +1361,8 @@ class Stream:
         self.frame_stream = FrameStream(device, nb_frames)
         self.event_stream = EventStream(device)
         self.context_stack = contextlib.ExitStack()
+        tstream = self.device.transfer_stream()
+        self.stream = stream(self.frame_stream, self.event_stream, tstream)
 
     def __enter__(self):
         self.context_stack.enter_context(self.frame_stream)
@@ -1342,8 +1376,10 @@ class Stream:
         self.context_stack.close()
 
     def __iter__(self):
-        tstream = self.device.transfer_stream()
-        return stream(self.frame_stream, self.event_stream, tstream)
+        return self
+
+    def __next__(self):
+        return next(self.stream)
 
 
 def stream(fstream, estream, tstream):
@@ -1359,11 +1395,17 @@ def stream(fstream, estream, tstream):
 
 
 def copy_frame(frame, into=None):
+    pixel_type = DCAM_PIXELTYPE(frame.type)
     if into is None:
-        pixel_bytes = DCAM_PIXELTYPE(frame.type).bytes_per_pixel()
+        pixel_bytes = pixel_type.bytes_per_pixel()
         nbytes = frame.width * frame.height * pixel_bytes
         into = numpy.empty(nbytes, dtype=numpy.uint8)
     ctypes.memmove(into.ctypes.data, frame.buf, into.nbytes)
+    dtype = pixel_type.dtype()
+    if dtype:
+        into.dtype = dtype
+        into.shape = frame.width, frame.height
+    return into
 
 
 class Device:
@@ -1372,7 +1414,8 @@ class Device:
         self._lib = lib
         self.camera_id = camera_id
         self._handle = None
-        self._caps = None
+        self.capabilities = None
+        self.capability_names = None
         self._info = None
 
     def __del__(self):
@@ -1389,17 +1432,18 @@ class Device:
         except:
             pass
 
-    def _get_properties(self):
+    def _build_capabilities(self):
         prop_id = ctypes.c_int32(0)
         buff_size = ctypes.c_int32(64)
         buff = ctypes.create_string_buffer(buff_size.value)
 
         props = {}
+        prop_names = {}
         while True:
             try:
                 self._lib.dcamprop_getnextid(self._handle, ctypes.byref(prop_id),
                                                 ctypes.c_uint32(DCAMPROPOPTION.SUPPORT))
-            except:
+            except Exception:
                 break
             if not prop_id.value:
                 break
@@ -1407,17 +1451,20 @@ class Device:
             prop_name = buff.value.decode()
             prop_uname = prop_name.lower().replace(" ", "_")
             attr_dict = {"name": prop_name, "uname": prop_uname, "id": prop_id.value}
-            props[prop_name] = attr_dict
-            props[prop_uname] = attr_dict
             props[prop_id.value] = attr_dict
+            prop_names[prop_name] = attr_dict
+            prop_names[prop_uname] = attr_dict
             attr = DCAMPROP_ATTR()
             attr.cbSize = ctypes.sizeof(attr)
             attr.iProp = prop_id.value
             self._lib.dcamprop_getattr(self._handle, ctypes.byref(attr))
             attr_dict.update({name:getattr(attr, name) for name, _ in attr._fields_})
             attr_dict["iUnit"] = DCAMPROPUNIT(attr.iUnit)
+            dtype = attr.attribute & DCAMPROPATTRIBUTE.TYPE_MASK
+            attr_dict["dtype"] = DCAMPROPATTRIBUTE(dtype)
             attr_dict["attribute"] = DCAMPROPATTRIBUTE(attr.attribute)
-        return props
+        self.capabilities = props
+        self.capability_names = prop_names
 
     def _get_property_options(self, cap):
         curr_value = ctypes.c_double(cap["valuemin"])
@@ -1446,10 +1493,44 @@ class Device:
                 break
         return text_options
 
+    def _find_capability(self, id):
+        try:
+            return self.capabilities[id]
+        except KeyError:
+            return self.capability_names[id]
+
     def __getitem__(self, id):
-        cap = self._caps[id]
-        if cap["attribute"] & DCAMPROPATTRIBUTE.HASVALUETEXT:
-            pass
+        cap = self._find_capability(id)
+        c_value = ctypes.c_double(0)
+        self._lib.dcamprop_getvalue(self._handle, cap["id"], ctypes.byref(c_value))
+        dtype = cap["dtype"]
+        if dtype == DCAMPROPATTRIBUTE.TYPE_REAL:
+            value = c_value.value
+        elif dtype in {DCAMPROPATTRIBUTE.TYPE_LONG, DCAMPROPATTRIBUTE.TYPE_MODE}:
+            value = int(c_value.value)
+        else:
+            raise TypeError(dtype)
+        return value
+
+    def __setitem__(self, id, value):
+        cap = self._find_capability(id)
+        c_value = ctypes.c_double(value)
+        self._lib.dcamprop_setgetvalue(self._handle, cap["id"], ctypes.byref(c_value), 0)
+
+    def __contains__(self, id):
+        return id in self.capabilities or id in self.capability_names
+
+    def __len__(self):
+        return len(self.capabilities)
+
+    def __iter__(self):
+        return iter(self.capabilities)
+
+    def values(self):
+        return self.capabilities.values()
+
+    def keys(self):
+        return self.capabilities.keys()
 
     def _lock_frame_index(self, frame_index):
         frame = DCAMBUF_FRAME(0, 0, 0, frame_index, None, 0, 0, 0, 0, 0, 0, 0, 0, 0)
@@ -1477,7 +1558,10 @@ class Device:
         self._lib.dcamwait_close(handle)
 
     def _wait_start(self, handle, wait_start):
-        self._lib.dcamwait_start(handle, ctypes.byref(wait_start))
+        try:
+            self._lib.dcamwait_start(handle, ctypes.byref(wait_start))
+        except:
+            pass
         return DCAMWAIT_EVENT(wait_start.eventhappened)
 
     def _buf_alloc(self, nb_frames):
@@ -1492,20 +1576,21 @@ class Device:
 
     def open(self):
         if self.is_open():
-            raise RuntimeError("Libray is already open")
+            return
         popen = DCAMDEV_OPEN(0, self.camera_id, None)
         popen.size = ctypes.sizeof(popen)
         self._lib.dcamdev_open(ctypes.byref(popen))
         self._handle = ctypes.c_void_p(popen.hdcam)
 
         # initialize capabilities
-        self._caps = self._get_properties()
+        self._build_capabilities()
 
     def close(self):
         if self._handle is not None:
             self._lib.dcamdev_close(self._handle)
             self._handle = None
-        self._caps = None
+        self.capabilities = None
+        self.capability_names = None
         self._info = None
 
     def get_info(self):
@@ -1522,8 +1607,11 @@ class Device:
             for par in pars:
                 param = DCAMDEV_STRING(0, par.value, ctypes.cast(buff, ctypes.c_char_p), buff_size)
                 param.size = ctypes.sizeof(param)
-                self._lib.dcamdev_getstring(self._handle, ctypes.byref(param))
-                info[par] = buff.decode()
+                try:
+                    self._lib.dcamdev_getstring(self._handle, ctypes.byref(param))
+                except Exception:
+                    continue
+                info[par] = buff.value.decode()
             self._info = info
         return self._info
 
@@ -1532,8 +1620,18 @@ class Device:
         self._lib.dcamcap_status(self._handle, ctypes.byref(status))
         return DCAMCAP_STATUS(status.value)
 
-    def start(self, nb_frames=0):
-        mode = DCAMCAP_START.SNAP if nb_frames > 0 else DCAMCAP_START.SEQUENCE
+    def get_last_error(self):
+        c_buf_len = 80
+        c_buf = ctypes.create_string_buffer(c_buf_len)
+        try:
+            self._lib.dcam_getlasterror(self._handle, c_buf, c_buf_len)
+        except:
+            pass
+        return c_buf.value.decode()
+
+    def start(self, live=False):
+        # Not to be used directly, first need to setup buffer!
+        mode = DCAMCAP_START.SEQUENCE if live else DCAMCAP_START.SNAP
         self._lib.dcamcap_start(self._handle, mode)
 
     def stop(self):
@@ -1582,8 +1680,7 @@ class DCAM:
         self.close()
 
     def __enter__(self):
-        if not self.is_open():
-            self.open()
+        self.open()
         return self
 
     def __exit__(self, exc_type, exc_value, tb):
@@ -1595,14 +1692,24 @@ class DCAM:
     def __len__(self):
         return self.nb_devices
 
+    def __iter__(self):
+        return (self[i] for i in range(self.nb_devices))
+
+    def __getitem__(self, device_id):
+        if 0 <= device_id < self.nb_devices:
+            dev = self._devices.get(device_id)
+            if dev is None:
+                self._devices[device_id] = dev = Device(self, device_id)
+            return dev
+        raise KeyError(f"Device {device_id!r} not present")
+
     def __getattr__(self, name):
         member = getattr(self._lib, name)
         if callable(member):
-            member.restype = ctypes.c_int32
             @functools.wraps(member)
             def func(*args, **kwargs):
                 r = member(*args, **kwargs)
-                if r != DCAMERR.SUCCESS and int(r) < 0:
+                if r != DCAMERR.SUCCESS and ctypes.c_int32(r).value < 0:
                     raise DCAMError(DCAMERR(r), name)
             setattr(self, name, func)
             return func
@@ -1613,7 +1720,7 @@ class DCAM:
 
     def open(self):
         if self.is_open():
-            raise RuntimeError("Libray is already open")
+            return
         state = DCAMAPI_INIT(0, 0, 0, 0, None, None)
         state.size = ctypes.sizeof(state)
         self.dcamapi_init(ctypes.byref(state))
@@ -1630,19 +1737,38 @@ class DCAM:
             self.dcam_uninit()
             self._state = None
 
-    def __getitem__(self, device_id):
-        if 0 <= device_id < self.nb_devices:
-            dev = self._devices.get(device_id)
-            if dev is None:
-                self._devices[device_id] = dev = Device(self, device_id)
-            return dev
-        raise KeyError(f"Device {device_id!r} not present")
-
 
 dcam = DCAM()
 
 
+def gen_acquire(device, exposure_time=1, nb_frames=1):
+    """Simple acquisition example"""
+    device["exposure_time"] = exposure_time
+    with Stream(device, nb_frames) as stream:
+        logging.info("start acquisition")
+        device.start()
+        for frame in stream:
+            yield copy_frame(frame)
+        logging.info("finised acquisition")
+
+
+def main(args=None):
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-n', '--nb-frames', default=10, type=int)
+    parser.add_argument('-e', '--exposure-time',default=0.1, type=float)
+    parser.add_argument('--log-level', help='log level', type=str,
+                        default='INFO',
+                        choices=['DEBUG', 'INFO', 'WARN', 'ERROR'])
+    options = parser.parse_args(args)
+    log_fmt = '%(levelname)s %(asctime)-15s %(name)s: %(message)s'
+    logging.basicConfig(level=options.log_level.upper(), format=log_fmt)
+
+    with dcam:
+        with dcam[0] as camera:
+            for i, frame in enumerate(gen_acquire(camera, options.exposure_time, options.nb_frames)):
+                logging.info(f"Frame #{i+1}/{options.nb_frames} {frame.shape} {frame.dtype}")
+
+
 if __name__ == "__main__":
-    dcam.open()
-    cam = dcam[0]
-    cam.open()
+    main()

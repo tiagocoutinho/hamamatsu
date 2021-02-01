@@ -7,10 +7,10 @@ import numpy
 from Lima.Core import (
     HwInterface, HwDetInfoCtrlObj, HwSyncCtrlObj, HwBufferCtrlObj, HwCap,
     HwFrameInfoType, SoftBufferCtrlObj, Size, FrameDim, Bpp8, Bpp12, Bpp16,
-    RGB24, Timestamp, AcqReady, AcqRunning, CtControl, CtSaving,
+    RGB24, BGR24, Timestamp, AcqReady, AcqRunning, CtControl, CtSaving,
     IntTrig, ExtTrigSingle, ExtTrigMult, ExtGate)
 
-from hamamatsu.dcam import dcam, Stream, DCAM_PIXELTYPE, DCAMIDSTR
+from hamamatsu.dcam import dcam, Stream, DCAM_PIXELTYPE, DCAMIDSTR, DCAMPROPUNIT, copy_frame
 
 
 Status = HwInterface.StatusType
@@ -22,6 +22,7 @@ class Sync(HwSyncCtrlObj):
 
     def __init__(self, detector):
         self.detector = detector
+        self.nb_frames = 1
         super().__init__()
 
     def checkTrigMode(self, trig_mode):
@@ -29,7 +30,7 @@ class Sync(HwSyncCtrlObj):
 
     def setTrigMode(self, trig_mode):
         if not self.checkTrigMode(trig_mode):
-            raise ValueError('Unsupported trigger mode')
+            raise ValueError("Unsupported trigger mode")
         if trig_mode == IntTrig:
             self.detector.triggermode = False
             self.detector.continuoustrigger = False
@@ -53,23 +54,22 @@ class Sync(HwSyncCtrlObj):
         return IntTrig
 
     def setExpTime(self, exp_time):
-        self.detector.inttime = exp_time
+        self.detector["exposure_time"] = exp_time
 
     def getExpTime(self):
-        return self.detector.inttime
+        return self.detector["exposure_time"]
 
     def setLatTime(self, lat_time):
-        self.detector.set_delay_frame(lat_time)
-        self.latency_time = lat_time
+        pass
 
     def getLatTime(self):
-        return self.latency_time
+        return 0
 
     def setNbHwFrames(self, nb_frames):
-        self.detector.frames = nb_frames
+        self.nb_frames = nb_frames
 
     def getNbHwFrames(self):
-        return self.detector.frames
+        return self.nb_frames
 
     def getValidRanges(self):
         return self.ValidRangesType(10E-9, 1E6, 10E-9, 1E6)
@@ -92,32 +92,35 @@ class DetInfo(HwDetInfoCtrlObj):
         super().__init__()
 
     def getMaxImageSize(self):
-        raise NotImplementedError
-        return Size(w, h)
+        w = self.detector.capability_names["image_width"]
+        h = self.detector.capability_names["image_height"]
+        return Size(w["valuemax"], h["valuemax"])
 
     def getDetectorImageSize(self):
-        raise NotImplementedError
+        w = self.detector["image_width"]
+        h = self.detector["image_height"]
         return Size(w, h)
 
     def getDefImageType(self):
         return Bpp16
 
     def getCurrImageType(self):
-        raise NotImplementedError
+        pixel_type = DCAM_PIXELTYPE(self.detector['image_pixel_type'])
+        return self.ImageTypeMap[pixel_type]
 
     def setCurrImageType(self, image_type):
         if image_type not in self.PixelTypeMap:
             raise ValueError(f"Unsupported image type {image_type!r}")
-        itype = PixelTypeMap[image_type]
-        # TODO: Activate image type
-        raise NotImplementedError
+        pixel_type = self.PixelTypeMap[image_type]
+        self.detector['image_pixel_type'] = pixel_type
 
     def getPixelSize(self):
-        raise NotImplementedError
-        # in micrometer
-        width = self.detector.module_sensor_widths.mean()
-        # is height 4/8 mm or the sensor thickness ?
-        height = self.detector.module_sensor_thicknesses.mean()
+        w_prop = self.detector.capability_names["image_detector_pixel_width"]
+        unit = DCAMPROPUNIT(w_prop['iUnit'])
+        width = unit.to_SI(self.detector["image_detector_pixel_width"])
+        h_prop = self.detector.capability_names["image_detector_pixel_height"]
+        unit = DCAMPROPUNIT(h_prop['iUnit'])
+        height = unit.to_SI(self.detector["image_detector_pixel_height"])
         return width, height
 
     def getDetectorType(self):
@@ -157,6 +160,9 @@ class Acquisition:
         self.acq_thread.daemon = True
         self.acq_thread.start()
 
+    def wait_until_prepared(self):
+        self.prepared.wait()
+
     def start(self):
         self.start_trigger.set()
 
@@ -185,7 +191,7 @@ class Acquisition:
                 self.status = Status.Ready
                 return
             start_time = time.time()
-            self.detector.start(nb_frames)
+            self.detector.start()
             self.status = Status.Exposure
             buffer_manager.setStartTimestamp(Timestamp(start_time))
             for frame, buff, frame_info in zip(stream, buffers, frame_infos):
@@ -222,6 +228,7 @@ class Interface(HwInterface):
         frame_dim = self.buff.getFrameDim()
         buffer_manager = self.buff.getBuffer()
         self.acq = Acquisition(self.detector, buffer_manager, nb_frames, frame_dim)
+        self.acq.wait_until_prepared()
 
     def startAcq(self):
         self.acq.start()
@@ -240,11 +247,13 @@ class Interface(HwInterface):
 
 
 def get_interface(camera_id):
-    camera = dcam[camera_id]
+    dcam.open()
+    camera = dcam[camera_id] if isinstance(camera_id, int) else camera_id
+    camera.open()
     interface = Interface(camera)
     return interface
 
 
-def get_control(url):
-    interface = get_interface(url)
+def get_control(camera_id):
+    interface = get_interface(camera_id)
     return CtControl(interface)

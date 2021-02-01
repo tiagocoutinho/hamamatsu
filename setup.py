@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
 """The setup script."""
 
 from setuptools import setup, find_packages
@@ -11,10 +8,13 @@ with open('README.rst') as readme_file:
 with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
-requirements = [ 'gevent', 'PyYAML', 'enum34; python_version < "3.4"' ]
+requirements = [ 'gevent', 'PyYAML']
 
-extras = {'simulator': ['sinstruments'],
-          'lima': ['Lima'] }
+extras = {
+    'simulator': ['sinstruments>=1'],
+    'lima': ['lima-toolbox>=1', 'beautifultable>=1', 'click>=7'], 
+}
+extras["all"] = list(set.union(*(set(i) for i in extras.values())))
 
 setup_requirements = ['pytest-runner', ]
 
@@ -35,14 +35,16 @@ setup(
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
     ],
-    description="Python library to access Hamamatsu RemoteEX interface",
+    description="Python library to access Hamamatsu using DCAM or RemoteEX interface",
     install_requires=requirements,
     extras_require=extras,
     license="MIT license",
     long_description=readme + '\n\n' + history,
     include_package_data=True,
-    keywords=['hamamatsu', 'remoteex', 'lima', 'simulator'],
+    keywords=['hamamatsu', 'remoteex', 'dcam', 'lima', 'simulator'],
     name='hamamatsu',
     packages=find_packages(include=['hamamatsu']),
     setup_requires=setup_requirements,
@@ -51,10 +53,23 @@ setup(
     url='https://gitlab.com/tiagocoutinho/hamamatsu',
     version='0.1.0',
     zip_safe=False,
+    python_requires=">=3.7",
     entry_points={
         'console_scripts': [
             'hamamatsu-simulator = hamamatsu.simulator [simulator]',
             'hamamatsu-lima = hamamatsu.lima [Lima]',
-            ]
-        },
+        ],
+        "Lima_camera": [
+            "Hamamatsu=hamamatsu.lima.camera"
+        ],
+        "Lima_tango_camera": [
+            "Hamamatsu=hamamatsu.lima.tango"
+        ],
+        "limatb.cli.camera": [
+            'Hamamatsu=hamamatsu.lima.cli:hamamatsu [lima]'
+        ],
+        "limatb.cli.camera.scan": [
+            "Hamamatsu=hamamatsu.lima.cli:scan [lima]"
+        ],
+    }
 )
