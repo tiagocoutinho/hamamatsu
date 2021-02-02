@@ -11,7 +11,7 @@ from limatb.cli import camera, url, table_style, max_width
 from limatb.info import info_list
 from limatb.network import get_subnet_addresses, get_host_by_addr
 
-from ..dcam import dcam, DCAMIDSTR
+from ..dcam import dcam, EIDString
 from .camera import Interface
 
 
@@ -42,19 +42,18 @@ def detector_table(detectors):
 
     table.columns.header = ["ID", "Vendor", "Model", "S/N", "Bus", "Version", "Driver", "Module", "API", "Series"]
     for i, detector in enumerate(detectors):
-        with detector:
-            info = collections.defaultdict(str)
-            info.update(detector.get_info())
+        info = collections.defaultdict(str)
+        info.update(detector.info)
         row = [i, 
-            info[DCAMIDSTR.VENDOR], 
-            info[DCAMIDSTR.MODEL],
-            info[DCAMIDSTR.CAMERAID],
-            info[DCAMIDSTR.BUS],
-            info[DCAMIDSTR.CAMERAVERSION],
-            info[DCAMIDSTR.DRIVERVERSION],
-            info[DCAMIDSTR.MODULEVERSION],
-            info[DCAMIDSTR.DCAMAPIVERSION],
-            info[DCAMIDSTR.CAMERA_SERIESNAME]
+            info[EIDString.VENDOR], 
+            info[EIDString.MODEL],
+            info[EIDString.CAMERAID],
+            info[EIDString.BUS],
+            info[EIDString.CAMERAVERSION],
+            info[EIDString.DRIVERVERSION],
+            info[EIDString.MODULEVERSION],
+            info[EIDString.DCAMAPIVERSION],
+            info[EIDString.CAMERA_SERIESNAME]
         ]
         table.rows.append(row)
     return table

@@ -10,7 +10,7 @@ import numpy
 TIMEOUT_INFINITE = 0x80000000
 
 
-class DCAMERR(enum.IntEnum):
+class EError(enum.IntEnum):
 
     # status error
     BUSY                   = 0x80000101 # API cannot process in busy state.
@@ -136,7 +136,7 @@ class DCAMERR(enum.IntEnum):
     SUCCESS                = 1
 
 
-class DCAMPROPOPTION(enum.IntEnum):
+class EPropOption(enum.IntEnum):
 
     # direction flag for dcam_getnextpropertyid(), dcam_querypropertyvalue()
     PRIOR        = 0xFF000000 #  prior value
@@ -155,7 +155,7 @@ class DCAMPROPOPTION(enum.IntEnum):
     NONE         = 0x00000000 #  no option
 
 
-class DCAMIDSTR(enum.IntEnum):
+class EIDString(enum.IntEnum):
     BUS                      = 0x04000101
     CAMERAID                 = 0x04000102
     VENDOR                   = 0x04000103
@@ -174,27 +174,27 @@ class DCAMIDSTR(enum.IntEnum):
     OPTICALBLOCK_CHANNEL_2   = 0x04001105
 
 
-class DCAMCAP_STATUS(enum.IntEnum):
-    DCAMCAP_STATUS_ERROR    = 0x0000,
-    DCAMCAP_STATUS_BUSY     = 0x0001,
-    DCAMCAP_STATUS_READY    = 0x0002,
-    DCAMCAP_STATUS_STABLE   = 0x0003,
-    DCAMCAP_STATUS_UNSTABLE = 0x0004,
+class EStatus(enum.IntEnum):
+    DCAMCAP_STATUS_ERROR    = 0x0000
+    DCAMCAP_STATUS_BUSY     = 0x0001
+    DCAMCAP_STATUS_READY    = 0x0002
+    DCAMCAP_STATUS_STABLE   = 0x0003
+    DCAMCAP_STATUS_UNSTABLE = 0x0004
 
 
-class DCAMBUF_ATTACHKIND(enum.IntEnum):
+class EAttach(enum.IntEnum):
     FRAME              = 0
-    TIMESTAMP          = 1,
-    FRAMESTAMP         = 2,
-    PRIMARY_TIMESTAMP  = 3,
-    PRIMARY_FRAMESTAMP = 4,
+    TIMESTAMP          = 1
+    FRAMESTAMP         = 2
+    PRIMARY_TIMESTAMP  = 3
+    PRIMARY_FRAMESTAMP = 4
 
 
-class DCAMCAP_TRANSFERKIND(enum.IntEnum):
+class ETransfer(enum.IntEnum):
     FRAME = 0
 
 
-class DCAMWAIT_EVENT(enum.IntFlag):
+class EWaitEvent(enum.IntFlag):
     CAP_TRANSFERRED = 0x0001
     CAP_FRAMEREADY  = 0x0002 # all modules support
     CAP_CYCLEEND    = 0x0004 # all modules support
@@ -210,7 +210,7 @@ class DCAMWAIT_EVENT(enum.IntFlag):
     REC_WRITEFRAME  = 0x8000 # DCAMCAP_START_BUFRECORD only
 
 
-class DCAM_PIXELTYPE(enum.IntEnum):
+class EPixelType(enum.IntEnum):
     MONO8   = 0x00000001
     MONO16  = 0x00000002
     MONO12  = 0x00000003
@@ -248,12 +248,12 @@ class DCAM_PIXELTYPE(enum.IntEnum):
             return None
 
 
-class DCAMCAP_START(enum.IntEnum):
+class EStart(enum.IntEnum):
     SEQUENCE = -1
     SNAP = 0
 
 
-class DCAMPROPATTRIBUTE(enum.IntFlag):
+class EPropAttr(enum.IntFlag):
     # supporting information of DCAM_PROPERTYATTR
     HASRANGE        = 0x80000000
     HASSTEP        = 0x40000000
@@ -301,7 +301,7 @@ class DCAMPROPATTRIBUTE(enum.IntFlag):
     TYPE_MASK            = 0x0000000F    # mask for property value type
 
 
-class DCAMPROPUNIT(enum.IntEnum):
+class EUnit(enum.IntEnum):
     SECOND         = 1            # sec
     CELSIUS        = 2            # for sensor temperature
     KELVIN         = 3            # for color temperature
@@ -322,20 +322,30 @@ class DCAMPROPUNIT(enum.IntEnum):
             return numpy.radians(value)
         return value
 
+
+class ESensorMode(enum.IntEnum):
+    AREA           = 1
+    SLIT           = 2
+    LINE           = 3
+    TDI            = 4
+    FRAMING        = 5
+    PARTIALAREA    = 6
+    SLITLINE       = 9
+    TDI_EXTENDED   = 10
+    PANORAMIC      = 11
+    PROGRESSIVE    = 12
+    SPLITVIEW      = 14
+    DUALLIGHTSHEET = 16
+
+
+class ESystemAlive(enum.IntEnum):
+    OFFLINE  = 1
+    ONLINE   = 2
+
+
+# The following are pending properties to be moved into their own individual
+# Enum (as soon as there is a need for it :-)
 class DCAMPROPMODEVALUE(enum.IntEnum):
-    # DCAM_IDPROP_SENSORMODE
-    SENSORMODE__AREA                    = 1            #    "AREA"
-    SENSORMODE__SLIT                    = 2            #    "SLIT"                        # reserved
-    SENSORMODE__LINE                    = 3            #    "LINE"
-    SENSORMODE__TDI                    = 4            #    "TDI"
-    SENSORMODE__FRAMING                = 5            #    "FRAMING"                    # reserved
-    SENSORMODE__PARTIALAREA            = 6            #    "PARTIAL AREA"                # reserved
-    SENSORMODE__SLITLINE                = 9            #    "SLIT LINE"                    # reserved
-    SENSORMODE__TDI_EXTENDED            = 10            #    "TDI EXTENDED"
-    SENSORMODE__PANORAMIC                = 11            #    "PANORAMIC"                    # reserved
-    SENSORMODE__PROGRESSIVE            = 12            #    "PROGRESSIVE"
-    SENSORMODE__SPLITVIEW                = 14            #    "SPLIT VIEW"
-    SENSORMODE__DUALLIGHTSHEET            = 16            #    "DUAL LIGHTSHEET"
 
     # DCAM_IDPROP_SHUTTER_MODE
     SHUTTER_MODE__GLOBAL                = 1            #    "GLOBAL"
@@ -352,7 +362,7 @@ class DCAMPROPMODEVALUE(enum.IntEnum):
     READOUT_DIRECTION__DIVERGE            = 5            #    "DIVERGE"
 
     # DCAM_IDPROP_READOUT_UNIT
-#    READOUT_UNIT__LINE                    = 1            #    "LINE"                        # reserved
+    #    READOUT_UNIT__LINE                    = 1            #    "LINE"                        # reserved
     READOUT_UNIT__FRAME                = 2            #    "FRAME"
     READOUT_UNIT__BUNDLEDLINE            = 3            #    "BUNDLED LINE"
     READOUT_UNIT__BUNDLEDFRAME            = 4            #    "BUNDLED FRAME"
@@ -477,7 +487,7 @@ class DCAMPROPMODEVALUE(enum.IntEnum):
     # DCAM_IDPROP_OUTPUTTRIGGER_ACTIVE
     OUTPUTTRIGGER_ACTIVE__EDGE            = 1            #    "EDGE"
     OUTPUTTRIGGER_ACTIVE__LEVEL        = 2            #    "LEVEL"
-#    OUTPUTTRIGGER_ACTIVE__PULSE        = 3            #    "PULSE"                        # reserved
+    #    OUTPUTTRIGGER_ACTIVE__PULSE        = 3            #    "PULSE"                        # reserved
 
     # DCAM_IDPROP_OUTPUTTRIGGER_KIND
     OUTPUTTRIGGER_KIND__LOW            = 1            #    "LOW"
@@ -526,8 +536,8 @@ class DCAMPROPMODEVALUE(enum.IntEnum):
     MECHANICALSHUTTER__OPEN            = 3            #    "OPEN"
 
     # DCAM_IDPROP_MECHANICALSHUTTER_AUTOMODE                                                 # reserved
-#    MECHANICALSHUTTER_AUTOMODE__OPEN_WHEN_EXPOSURE    = 1    # "OPEN WHEN EXPOSURE"        # reserved
-#    MECHANICALSHUTTER_AUTOMODE__CLOSE_WHEN_READOUT    = 2    # "CLOSE WHEN READOUT"        # reserved
+    #    MECHANICALSHUTTER_AUTOMODE__OPEN_WHEN_EXPOSURE    = 1    # "OPEN WHEN EXPOSURE"        # reserved
+    #    MECHANICALSHUTTER_AUTOMODE__CLOSE_WHEN_READOUT    = 2    # "CLOSE WHEN READOUT"        # reserved
 
     # DCAM_IDPROP_LIGHTMODE
     LIGHTMODE__LOWLIGHT                = 1            #    "LOW LIGHT"
@@ -552,7 +562,7 @@ class DCAMPROPMODEVALUE(enum.IntEnum):
     # DCAM_IDPROP_SENSORCOOLER
     SENSORCOOLER__OFF                    = 1            #    "OFF"
     SENSORCOOLER__ON                    = 2            #    "ON"
-#    SENSORCOOLER__BEST                    = 3            #    "BEST"                        # reserved
+    #    SENSORCOOLER__BEST                    = 3            #    "BEST"                        # reserved
     SENSORCOOLER__MAX                    = 4            #    "MAX"
 
     # DCAM_IDPROP_SENSORTEMPERATURE_STATUS
@@ -573,9 +583,9 @@ class DCAMPROPMODEVALUE(enum.IntEnum):
     SENSORCOOLERSTATUS__WARNING        = 5            #    "WARNING"
 
     # DCAM_IDPROP_CONTRAST_CONTROL                                                             # reserved
-#    CONTRAST_CONTROL__OFF                = 1            #    "OFF"                        # reserved
-#    CONTRAST_CONTROL__ON                = 2            #    "ON"                        # reserved
-#    CONTRAST_CONTROL__FRONTPANEL        = 3            #    "FRONT PANEL"                # reserved
+    #    CONTRAST_CONTROL__OFF                = 1            #    "OFF"                        # reserved
+    #    CONTRAST_CONTROL__ON                = 2            #    "ON"                        # reserved
+    #    CONTRAST_CONTROL__FRONTPANEL        = 3            #    "FRONT PANEL"                # reserved
 
     # DCAM_IDPROP_REALTIMEGAINCORRECT_LEVEL
     REALTIMEGAINCORRECT_LEVEL__1        = 1            #    "1"
@@ -670,10 +680,6 @@ class DCAMPROPMODEVALUE(enum.IntEnum):
     HOTPIXELCORRECT_LEVEL__MINIMUM        = 2            #    "MINIMUM"
     HOTPIXELCORRECT_LEVEL__AGGRESSIVE    = 3            #    "AGGRESSIVE"
 
-    # DCAM_IDPROP_SYSTEM_ALIVE
-    SYSTEM_ALIVE__OFFLINE                = 1            #    "OFFLINE"
-    SYSTEM_ALIVE__ONLINE                = 2            #    "ONLINE"
-
     # DCAM_IDPROP_TIMESTAMP_MODE
     TIMESTAMP_MODE__NONE                = 1            #    "NONE"
     TIMESTAMP_MODE__LINEBEFORELEFT        = 2            #    "LINE BEFORE LEFT"
@@ -735,8 +741,8 @@ class DCAMPROPMODEVALUE(enum.IntEnum):
 
     # for backward compativilities
 
-    SCAN_MODE__NORMAL            = SENSORMODE__AREA
-    SCAN_MODE__SLIT            = SENSORMODE__SLIT
+    SCAN_MODE__NORMAL            = ESensorMode.AREA.value
+    SCAN_MODE__SLIT            = ESensorMode.SLIT.value
 
     SWITCHMODE_OFF                = MODE__OFF    #    "OFF"
     SWITCHMODE_ON                = MODE__ON    #    "ON"
@@ -750,7 +756,14 @@ class DCAMPROPMODEVALUE(enum.IntEnum):
     TRIGGERSOURCE__EXERNAL        = TRIGGERSOURCE__EXTERNAL
 
 
-class DCAMIDPROP(enum.IntEnum):
+class ETriggerSource(enum.IntEnum):
+    INTERNAL    = 1
+    EXTERNAL    = 2
+    SOFTWARE    = 3
+    MASTERPULSE = 4
+
+
+class EProp(enum.IntEnum):
     #Group: TIMING
     TRIGGERSOURCE                   = 0x00100110 # R/W, mode,    "TRIGGER SOURCE"
     TRIGGERACTIVE                   = 0x00100120 # R/W, mode,    "TRIGGER ACTIVE"
@@ -1002,13 +1015,13 @@ class DCAMIDPROP(enum.IntEnum):
     IMAGE_ROWBYTES                  = 0x00420230 # R/O, long,    "IMAGE ROWBYTES"
     IMAGE_FRAMEBYTES                = 0x00420240 # R/O, long,    "IMAGE FRAMEBYTES"
     IMAGE_TOPOFFSETBYTES            = 0x00420250 # R/O, long,    "IMAGE TOP OFFSET BYTES"        # reserved
-    IMAGE_PIXELTYPE                 = 0x00420270 # R/W, DCAM_PIXELTYPE,    "IMAGE PIXEL TYPE"
+    IMAGE_PIXELTYPE                 = 0x00420270 # R/W, EPixelType,    "IMAGE PIXEL TYPE"
     IMAGE_CAMERASTAMP               = 0x00420300 # R/W, long,    "IMAGE CAMERA STAMP"
 
     BUFFER_ROWBYTES                 = 0x00420330 # R/O, long,    "BUFFER ROWBYTES"
     BUFFER_FRAMEBYTES               = 0x00420340 # R/O, long,    "BUFFER FRAME BYTES"
     BUFFER_TOPOFFSETBYTES           = 0x00420350 # R/O, long,    "BUFFER TOP OFFSET BYTES"
-    BUFFER_PIXELTYPE                = 0x00420360 # R/O, DCAM_PIXELTYPE,    "BUFFER PIXEL TYPE"
+    BUFFER_PIXELTYPE                = 0x00420360 # R/O, EPixelType,    "BUFFER PIXEL TYPE"
 
     RECORDFIXEDBYTES_PERFILE        = 0x00420410 # R/O,    long    "RECORD FIXED BYTES PER FILE"
     RECORDFIXEDBYTES_PERSESSION     = 0x00420420 # R/O,    long    "RECORD FIXED BYTES PER SESSION"
@@ -1099,13 +1112,13 @@ class DCAMIDPROP(enum.IntEnum):
     _MASK_BODY            = 0x00FFFFF0
 
     # for backward compativilities
-    REMOTE_VALUE        = DCAMPROPATTRIBUTE.VOLATILE.value
+    REMOTE_VALUE        = EPropAttr.VOLATILE.value
 
     PHOTONIMAGING_MODE__0    = DCAMPROPMODEVALUE.PHOTONIMAGINGMODE__0
     PHOTONIMAGING_MODE__1    = DCAMPROPMODEVALUE.PHOTONIMAGINGMODE__1
     PHOTONIMAGING_MODE__2    = DCAMPROPMODEVALUE.PHOTONIMAGINGMODE__2
 
-    SCAN_MODE            = SENSORMODE
+    SCAN_MODE            = ESensorMode.AREA
     SLITSCAN_HEIGHT        = SENSORMODE_SLITHEIGHT
 
     FRAME_BUNDLEMODE    = FRAMEBUNDLE_MODE
@@ -1129,6 +1142,16 @@ class DCAMIDPROP(enum.IntEnum):
     SHADINGCALIB_INTENSITYMAXIMUMERRORPERCENTAGE    = SHADINGCALIB_STABLEMAXERRORPERCENT
     SHADINGCALIB_AVERAGEFRAMECOUNT                    = SHADINGCALIB_SAMPLES
 
+    def to_enum(self):
+        return PROP_ENUM_MAP.get(self)
+
+
+PROP_ENUM_MAP = {
+    EProp.TRIGGERSOURCE: ETriggerSource,
+    EProp.SYSTEM_ALIVE: ESystemAlive,
+    EProp.SENSORMODE: ESensorMode,
+}
+
 
 class DCAMError(Exception):
 
@@ -1146,11 +1169,11 @@ class DCAMError(Exception):
 
     def __repr__(self):
         code = self.error_code
-        return f'{self.name}({code.name}, {self.location})'
+        return f'{self.name()}({code.name}, {self.location!r})'
 
     def __str__(self):
         code = self.error_code
-        return f'{self.name} : {code.name} ({code.value}) at {self.location}'
+        return f'{self.name()}: {self.location!r} raised {code.name} ({code.value})'
 
 
 # Hamamatsu structures.
@@ -1159,7 +1182,7 @@ class DCAMError(Exception):
 #
 # The dcam initialization structure
 #
-class DCAMAPI_INIT(ctypes.Structure):
+class SInit(ctypes.Structure):
     _fields_ = [("size", ctypes.c_int32),
             ("iDeviceCount", ctypes.c_int32),
             ("reserved", ctypes.c_int32),
@@ -1172,7 +1195,7 @@ class DCAMAPI_INIT(ctypes.Structure):
 #
 # The dcam open structure
 #
-class DCAMDEV_OPEN(ctypes.Structure):
+class SOpen(ctypes.Structure):
     _fields_ = [("size", ctypes.c_int32),
             ("index", ctypes.c_int32),
             ("hdcam", ctypes.c_void_p)]
@@ -1182,7 +1205,7 @@ class DCAMDEV_OPEN(ctypes.Structure):
 #
 # The dcam wait open structure
 #
-class DCAMWAIT_OPEN(ctypes.Structure):
+class SWaitOpen(ctypes.Structure):
     _fields_ = [("size", ctypes.c_int32),
             ("supportevent", ctypes.c_int32),
             ("hwait", ctypes.c_void_p),
@@ -1193,7 +1216,7 @@ class DCAMWAIT_OPEN(ctypes.Structure):
 #
 # The dcam wait start structure
 #
-class DCAMWAIT_START(ctypes.Structure):
+class SWaitStart(ctypes.Structure):
     _fields_ = [("size", ctypes.c_int32),
             ("eventhappened", ctypes.c_int32),
             ("eventmask", ctypes.c_int32),
@@ -1204,7 +1227,7 @@ class DCAMWAIT_START(ctypes.Structure):
 #
 # The dcam capture info structure
 #
-class DCAMCAP_TRANSFERINFO(ctypes.Structure):
+class STransferInfo(ctypes.Structure):
     _fields_ = [("size", ctypes.c_int32),
             ("iKind", ctypes.c_int32),
             ("nNewestFrameIndex", ctypes.c_int32),
@@ -1215,7 +1238,7 @@ class DCAMCAP_TRANSFERINFO(ctypes.Structure):
 #
 # The dcam buffer attachment structure
 #
-class DCAMBUF_ATTACH(ctypes.Structure):
+class SAttach(ctypes.Structure):
     _fields_ = [("size", ctypes.c_int32),
             ("iKind", ctypes.c_int32),
             ("buffer", ctypes.POINTER(ctypes.c_void_p)),
@@ -1226,7 +1249,7 @@ class DCAMBUF_ATTACH(ctypes.Structure):
 #
 # The dcam buffer frame structure
 #
-class DCAMBUF_FRAME(ctypes.Structure):
+class SFrame(ctypes.Structure):
     _fields_ = [("size", ctypes.c_int32),
             ("iKind", ctypes.c_int32),
             ("option", ctypes.c_int32),
@@ -1247,7 +1270,7 @@ class DCAMBUF_FRAME(ctypes.Structure):
 #
 # The dcam device string structure
 #
-class DCAMDEV_STRING(ctypes.Structure):
+class SString(ctypes.Structure):
     _fields_ = [("size", ctypes.c_int32),
             ("iString", ctypes.c_int32),
             ("text", ctypes.c_char_p),
@@ -1258,7 +1281,7 @@ class DCAMDEV_STRING(ctypes.Structure):
 #
 # The dcam property attribute structure.
 #
-class DCAMPROP_ATTR(ctypes.Structure):
+class Attr(ctypes.Structure):
     _fields_ = [("cbSize", ctypes.c_int32),
                 ("iProp", ctypes.c_int32),
                 ("option", ctypes.c_int32),
@@ -1282,11 +1305,12 @@ class DCAMPROP_ATTR(ctypes.Structure):
                 ("iProp_ArrayBase", ctypes.c_int32),
                 ("iPropStep_Element", ctypes.c_int32)]
 
+
 ## DCAMPROP_VALUETEXT
 #
 # The dcam text property structure.
 #
-class DCAMPROP_VALUETEXT(ctypes.Structure):
+class ValueText(ctypes.Structure):
     _fields_ = [("cbSize", ctypes.c_int32),
                 ("iProp", ctypes.c_int32),
                 ("value", ctypes.c_double),
@@ -1306,7 +1330,10 @@ class FrameStream:
         return self
 
     def __exit__(self, exc_type, exc_value, tb):
-        self.device._buf_release()
+        try:
+            self.device._buf_release()
+        except DCAMError as error:
+            logging.error("Could not release buffer. Reason %r", error)
 
     def __len__(self):
         return self.nb_frames
@@ -1320,7 +1347,7 @@ class FrameStream:
 
 class EventStream:
 
-    DefaultMask = DCAMWAIT_EVENT.CAP_FRAMEREADY | DCAMWAIT_EVENT.CAP_STOPPED
+    DefaultMask = EWaitEvent.CAP_FRAMEREADY | EWaitEvent.CAP_STOPPED
 
     def __init__(self, device, mask=DefaultMask, timeout=TIMEOUT_INFINITE):
         self.device = device
@@ -1385,9 +1412,9 @@ class Stream:
 def stream(fstream, estream, tstream):
     last_frame_index = -1
     for event in estream:
-        if event is DCAMWAIT_EVENT.CAP_STOPPED:
+        if event is EWaitEvent.CAP_STOPPED:
             break
-        elif event is DCAMWAIT_EVENT.CAP_FRAMEREADY:
+        elif event is EWaitEvent.CAP_FRAMEREADY:
             transfer = next(tstream)
             while transfer.nNewestFrameIndex > last_frame_index:
                 yield next(fstream)
@@ -1395,7 +1422,7 @@ def stream(fstream, estream, tstream):
 
 
 def copy_frame(frame, into=None):
-    pixel_type = DCAM_PIXELTYPE(frame.type)
+    pixel_type = EPixelType(frame.type)
     if into is None:
         pixel_bytes = pixel_type.bytes_per_pixel()
         nbytes = frame.width * frame.height * pixel_bytes
@@ -1406,6 +1433,19 @@ def copy_frame(frame, into=None):
         into.dtype = dtype
         into.shape = frame.width, frame.height
     return into
+
+
+class Attribute(dict):
+
+    def __getattr__(self, name):
+        return self[name]
+
+    def __dir__(self):
+        return sorted(self)
+
+    @property
+    def value(self):
+        return self.read()
 
 
 class Device:
@@ -1437,42 +1477,75 @@ class Device:
         buff_size = ctypes.c_int32(64)
         buff = ctypes.create_string_buffer(buff_size.value)
 
-        props = {}
-        prop_names = {}
+        capabilities = {}
+        capability_names = {}
         while True:
             try:
-                self._lib.dcamprop_getnextid(self._handle, ctypes.byref(prop_id),
-                                                ctypes.c_uint32(DCAMPROPOPTION.SUPPORT))
+                self._lib.dcamprop_getnextid(
+                    self._handle, ctypes.byref(prop_id), ctypes.c_int32(EPropOption.SUPPORT)
+                )
             except Exception:
                 break
             if not prop_id.value:
                 break
             self._lib.dcamprop_getname(self._handle, prop_id, buff, buff_size)
+            eprop = EProp(prop_id.value)
             prop_name = buff.value.decode()
             prop_uname = prop_name.lower().replace(" ", "_")
-            attr_dict = {"name": prop_name, "uname": prop_uname, "id": prop_id.value}
-            props[prop_id.value] = attr_dict
-            prop_names[prop_name] = attr_dict
-            prop_names[prop_uname] = attr_dict
-            attr = DCAMPROP_ATTR()
+            attr_dict = Attribute(name=prop_name, uname=prop_uname, prop=eprop)
+            capabilities[eprop] = attr_dict
+            capability_names[prop_name] = attr_dict
+            capability_names[prop_uname] = attr_dict
+            attr = Attr()
             attr.cbSize = ctypes.sizeof(attr)
             attr.iProp = prop_id.value
             self._lib.dcamprop_getattr(self._handle, ctypes.byref(attr))
-            attr_dict.update({name:getattr(attr, name) for name, _ in attr._fields_})
-            attr_dict["iUnit"] = DCAMPROPUNIT(attr.iUnit)
-            dtype = attr.attribute & DCAMPROPATTRIBUTE.TYPE_MASK
-            attr_dict["dtype"] = DCAMPROPATTRIBUTE(dtype)
-            attr_dict["attribute"] = DCAMPROPATTRIBUTE(attr.attribute)
-        self.capabilities = props
-        self.capability_names = prop_names
+            attr_dict["attribute"] = EPropAttr(attr.attribute)
+            attr_dict["id"] = attr.iProp
+            attr_dict["unit"] = EUnit(attr.iUnit)
+            attr_dict["min_value"] = attr.valuemin
+            attr_dict["max_value"] = attr.valuemax
+            attr_dict["step_value"] = attr.valuestep
+            attr_dict["default_value"] = attr.valuedefault
+            attr_dict["max_view"] = attr.nMaxView
+            attr_dict["max_channel"] = attr.nMaxChannel
+            attr_dict["dtype"] = dtype = attr.attribute & EPropAttr.TYPE_MASK
+            attr_dict["read"], attr_dict["write"] = self._make_read_write(attr_dict)
+            if EPropAttr.HASVALUETEXT in attr_dict["attribute"]:
+                attr_dict["enum"] = self._get_property_options(attr_dict)
+                attr_dict["enum_values"] = {v:k for k, v in attr_dict["enum"].items()}
+        self.capabilities = capabilities
+        self.capability_names = capability_names
+
+    def _make_read_write(self, cap):
+        eprop = cap["prop"]
+        dtype = cap["dtype"]
+        cid = cap["id"]
+        name = cap['uname']
+        enum_type = eprop.to_enum()
+        if enum_type is not None:
+            decode = lambda v: enum_type(int(v))
+        elif dtype in {EPropAttr.TYPE_LONG, EPropAttr.TYPE_MODE, EPropAttr.TYPE_MASK}:
+            decode = int
+        elif dtype == EPropAttr.TYPE_REAL:
+            decode = lambda x: x
+        def read():
+            c_value = ctypes.c_double(0)
+            self._lib.dcamprop_getvalue(self._handle, cid, ctypes.byref(c_value))
+            return decode(c_value.value)
+        def write(value):
+            c_value = ctypes.c_double(value)
+            self._lib.dcamprop_setgetvalue(self._handle, cid, ctypes.byref(c_value), 0)
+            return decode(c_value.value)
+        return read, write
 
     def _get_property_options(self, cap):
-        curr_value = ctypes.c_double(cap["valuemin"])
-        prop_text = DCAMPROP_VALUETEXT()
-        c_buf_len = 256
+        curr_value = ctypes.c_double(cap["min_value"])
+        prop_text = ValueText()
+        c_buf_len = 64
         c_buf = ctypes.create_string_buffer(c_buf_len)
         prop_text.cbSize = ctypes.sizeof(prop_text)
-        prop_text.iProp = cap
+        prop_text.iProp = cap["id"]
         prop_text.value = curr_value
         prop_text.text = ctypes.addressof(c_buf)
         prop_text.textbytes = c_buf_len
@@ -1484,38 +1557,25 @@ class Device:
             text_options[prop_text.text.decode()] = int(curr_value.value)
 
             # Get next value.
-            ret = self._lib.dcamprop_queryvalue(self._handle, cap,
-                                                ctypes.byref(curr_value),
-                                                ctypes.c_int32(DCAMPROPOPTION.NEXT))
+            try:
+                ret = self._lib.dcamprop_queryvalue(self._handle, cap["id"],
+                                                    ctypes.byref(curr_value),
+                                                    ctypes.c_int32(EPropOption.NEXT))
+            except DCAMError as error:
+                if error.error_code == EError.OUTOFRANGE:
+                    break
+                raise
             prop_text.value = curr_value
-
-            if (ret != 1):
-                break
         return text_options
 
-    def _find_capability(self, id):
+    def __getitem__(self, id):
         try:
             return self.capabilities[id]
         except KeyError:
             return self.capability_names[id]
 
-    def __getitem__(self, id):
-        cap = self._find_capability(id)
-        c_value = ctypes.c_double(0)
-        self._lib.dcamprop_getvalue(self._handle, cap["id"], ctypes.byref(c_value))
-        dtype = cap["dtype"]
-        if dtype == DCAMPROPATTRIBUTE.TYPE_REAL:
-            value = c_value.value
-        elif dtype in {DCAMPROPATTRIBUTE.TYPE_LONG, DCAMPROPATTRIBUTE.TYPE_MODE}:
-            value = int(c_value.value)
-        else:
-            raise TypeError(dtype)
-        return value
-
     def __setitem__(self, id, value):
-        cap = self._find_capability(id)
-        c_value = ctypes.c_double(value)
-        self._lib.dcamprop_setgetvalue(self._handle, cap["id"], ctypes.byref(c_value), 0)
+        return self[id].write(value)
 
     def __contains__(self, id):
         return id in self.capabilities or id in self.capability_names
@@ -1526,6 +1586,24 @@ class Device:
     def __iter__(self):
         return iter(self.capabilities)
 
+    def __repr__(self):
+        try:
+            info = self.info
+            name = f"{info[EIDString.VENDOR]} {info[EIDString.MODEL]}"
+            details = [f"  {k.name}: {v}" for k, v in info.items()]
+            return name + "\n" + "\n".join(details)
+        except Exception as error:
+            name = type(self).__name__
+            return f"{name}: {error!r}"
+        
+    def __str__(self):
+        try:
+            info = self.info
+            return f"{info[EIDString.VENDOR]}({info[EIDString.MODEL]})"
+        except Exception as error:
+            name = type(self).__name__
+            return f"{name}: {error!r}"
+
     def values(self):
         return self.capabilities.values()
 
@@ -1533,7 +1611,7 @@ class Device:
         return self.capabilities.keys()
 
     def _lock_frame_index(self, frame_index):
-        frame = DCAMBUF_FRAME(0, 0, 0, frame_index, None, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+        frame = SFrame(0, 0, 0, frame_index, None, 0, 0, 0, 0, 0, 0, 0, 0, 0)
         frame.size = ctypes.sizeof(frame)
         return self._lock_frame(frame)
 
@@ -1546,7 +1624,7 @@ class Device:
         return transfer
 
     def _wait_open(self):
-        wait_open = DCAMWAIT_OPEN(0, 0, None, self._handle)
+        wait_open = SWaitOpen(0, 0, None, self._handle)
         wait_open.size = ctypes.sizeof(wait_open)
         self._lib.dcamwait_open(ctypes.byref(wait_open))
         return ctypes.c_void_p(wait_open.hwait)
@@ -1562,14 +1640,14 @@ class Device:
             self._lib.dcamwait_start(handle, ctypes.byref(wait_start))
         except:
             pass
-        return DCAMWAIT_EVENT(wait_start.eventhappened)
+        return EWaitEvent(wait_start.eventhappened)
 
     def _buf_alloc(self, nb_frames):
         self._lib.dcambuf_alloc(self._handle, nb_frames)
 
     def _buf_release(self):
         # can only be called when status != BUSY, so must stop acquisition first
-        self._lib.dcambuf_release(self._handle, DCAMBUF_ATTACHKIND.FRAME)
+        self._lib.dcambuf_release(self._handle, EAttach.FRAME)
 
     def is_open(self):
         return self._handle is not None
@@ -1577,7 +1655,7 @@ class Device:
     def open(self):
         if self.is_open():
             return
-        popen = DCAMDEV_OPEN(0, self.camera_id, None)
+        popen = SOpen(0, self.camera_id, None)
         popen.size = ctypes.sizeof(popen)
         self._lib.dcamdev_open(ctypes.byref(popen))
         self._handle = ctypes.c_void_p(popen.hdcam)
@@ -1593,19 +1671,55 @@ class Device:
         self.capability_names = None
         self._info = None
 
-    def get_info(self):
+    def start(self, live=False):
+        # Not to be used directly, first need to setup buffer!
+        mode = EStart.SEQUENCE if live else EStart.SNAP
+        self._lib.dcamcap_start(self._handle, mode)
+
+    def stop(self):
+        self._lib.dcamcap_stop(self._handle)
+
+    def frame_stream(self, nb_frames):
+        # Unsafe method: need to call dcambuf_alloc first!
+        frame = SFrame(0, 0, 0, -1, None, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+        frame.size = ctypes.sizeof(frame)
+        for i in range(nb_frames):
+            frame.iFrame = i
+            yield self._lock_frame(frame)
+
+    def event_stream(self, mask, timeout, handle):
+        # Pass timeout in seconds
+        timeout = int(timeout * 1000)
+        param = SWaitStart(0, 0, mask, timeout)
+        while True:
+            try:
+                yield self._wait_start(handle, param)
+            except DCAMError as error:
+                if error.error_code is EError.ABORT:
+                    return
+                else:
+                    raise
+
+    def transfer_stream(self):
+        transfer = STransferInfo(0, ETransfer.FRAME, 0, 0)
+        transfer.size = ctypes.sizeof(transfer)
+        while True:
+            yield self._get_transfer_info(transfer)
+
+    @property
+    def info(self):
         if self._info is None:
             buff_size = ctypes.c_int32(256)
             buff = ctypes.create_string_buffer(buff_size.value)
             pars = {
-                DCAMIDSTR.BUS, DCAMIDSTR.CAMERAID, DCAMIDSTR.VENDOR,
-                DCAMIDSTR.MODEL, DCAMIDSTR.CAMERAVERSION,
-                DCAMIDSTR.DRIVERVERSION, DCAMIDSTR.MODULEVERSION,
-                DCAMIDSTR.DCAMAPIVERSION, DCAMIDSTR.CAMERA_SERIESNAME
+                EIDString.BUS, EIDString.CAMERAID, EIDString.VENDOR,
+                EIDString.MODEL, EIDString.CAMERAVERSION,
+                EIDString.DRIVERVERSION, EIDString.MODULEVERSION,
+                EIDString.DCAMAPIVERSION, EIDString.CAMERA_SERIESNAME
             }
             info = {}
             for par in pars:
-                param = DCAMDEV_STRING(0, par.value, ctypes.cast(buff, ctypes.c_char_p), buff_size)
+                param = SString(0, par.value, ctypes.cast(buff, ctypes.c_char_p), buff_size)
                 param.size = ctypes.sizeof(param)
                 try:
                     self._lib.dcamdev_getstring(self._handle, ctypes.byref(param))
@@ -1615,12 +1729,14 @@ class Device:
             self._info = info
         return self._info
 
-    def get_status(self):
+    @property
+    def status(self):
         status = ctypes.c_int32(0)
         self._lib.dcamcap_status(self._handle, ctypes.byref(status))
-        return DCAMCAP_STATUS(status.value)
+        return EStatus(status.value)
 
-    def get_last_error(self):
+    @property
+    def last_error(self):
         c_buf_len = 80
         c_buf = ctypes.create_string_buffer(c_buf_len)
         try:
@@ -1629,41 +1745,42 @@ class Device:
             pass
         return c_buf.value.decode()
 
-    def start(self, live=False):
-        # Not to be used directly, first need to setup buffer!
-        mode = DCAMCAP_START.SEQUENCE if live else DCAMCAP_START.SNAP
-        self._lib.dcamcap_start(self._handle, mode)
+    # physical properties
 
-    def stop(self):
-        self._lib.dcamcap_stop(self._handle)
+    @property
+    def pixel_size(self):
+        """Pixel size (x, y). Units in meter"""
+        w = self["image_detector_pixel_width"]
+        h = self["image_detector_pixel_height"]
+        width = w.unit.to_SI(w.read())
+        height = h.unit.to_SI(h.read())
+        return width, height
 
-    def frame_stream(self, nb_frames):
-        # Unsafe method: need to call dcambuf_alloc first!
-        frame = DCAMBUF_FRAME(0, 0, 0, -1, None, 0, 0, 0, 0, 0, 0, 0, 0, 0)
-        frame.size = ctypes.sizeof(frame)
-        for i in range(nb_frames):
-            frame.iFrame = i
-            yield self._lock_frame(frame)
+    # trigger
+    '''
+    def fire_software_trigger(self):
+        self._lib.dcamcap_firetrigger(self._handle, 0)
 
-    def event_stream(self, mask, timeout, handle):
-        # Pass timeout in seconds
-        timeout = int(timeout * 1000)
-        param = DCAMWAIT_START(0, 0, mask, timeout)
-        while True:
-            try:
-                yield self._wait_start(handle, param)
-            except DCAMError as error:
-                if error.error_code is DCAMERR.ABORT:
-                    return
-                else:
-                    raise
+    @property
+    def trigger_source(self):
+        return ETriggerSource(self["trigger_source"])
 
-    def transfer_stream(self):
-        transfer = DCAMCAP_TRANSFERINFO(0, DCAMCAP_TRANSFERKIND.FRAME, 0, 0)
-        transfer.size = ctypes.sizeof(transfer)
-        while True:
-            yield self._get_transfer_info(transfer)
+    @trigger_source.setter
+    def trigger_source(self, value):
+        self["trigger_source"] = ETriggerSource(value)
 
+    @property
+    def trigger_sources(self):
+        """All supported trigger sources"""
+        return [
+            ETriggerSource(i) 
+            for i in self.capability_names["trigger_source"]["enum_values"]
+        ]
+
+    @property
+    def system_alive(self):
+        return ESystemAlive(self["system_alive"])
+    '''
 
 class DCAM:
 
@@ -1705,12 +1822,13 @@ class DCAM:
 
     def __getattr__(self, name):
         member = getattr(self._lib, name)
+        member.restype = ctypes.c_uint32
         if callable(member):
             @functools.wraps(member)
             def func(*args, **kwargs):
                 r = member(*args, **kwargs)
-                if r != DCAMERR.SUCCESS and ctypes.c_int32(r).value < 0:
-                    raise DCAMError(DCAMERR(r), name)
+                if r != EError.SUCCESS and ctypes.c_int32(r).value < 0:
+                    raise DCAMError(EError(r), name)
             setattr(self, name, func)
             return func
         return member
@@ -1721,7 +1839,7 @@ class DCAM:
     def open(self):
         if self.is_open():
             return
-        state = DCAMAPI_INIT(0, 0, 0, 0, None, None)
+        state = SInit(0, 0, 0, 0, None, None)
         state.size = ctypes.sizeof(state)
         self.dcamapi_init(ctypes.byref(state))
         self._state = state

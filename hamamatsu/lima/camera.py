@@ -8,9 +8,11 @@ from Lima.Core import (
     HwInterface, HwDetInfoCtrlObj, HwSyncCtrlObj, HwBufferCtrlObj, HwCap,
     HwFrameInfoType, SoftBufferCtrlObj, Size, FrameDim, Bpp8, Bpp12, Bpp16,
     RGB24, BGR24, Timestamp, AcqReady, AcqRunning, CtControl, CtSaving,
-    IntTrig, ExtTrigSingle, ExtTrigMult, ExtGate)
+    IntTrig, IntTrigMult, ExtTrigSingle, ExtTrigMult, ExtGate)
 
-from hamamatsu.dcam import dcam, Stream, DCAM_PIXELTYPE, DCAMIDSTR, DCAMPROPUNIT, copy_frame
+from hamamatsu.dcam import (
+    dcam, Stream, ETriggerSource, EPixelType, EIDString, copy_frame
+)
 
 
 Status = HwInterface.StatusType
@@ -18,46 +20,51 @@ Status = HwInterface.StatusType
 
 class Sync(HwSyncCtrlObj):
 
-    trig_mode = IntTrig
-
     def __init__(self, detector):
         self.detector = detector
         self.nb_frames = 1
+        srcs = detector["trigger_source"].enum_values
+        self.trigger_modes = set()
+        if ETriggerSource.INTERNAL in srcs:
+            self.trigger_modes.add(IntTrig)
+        if ETriggerSource.SOFTWARE in srcs:
+            self.trigger_modes.add(IntTrigMult)
+        if ETriggerSource.EXTERNAL in srcs:
+            self.trigger_modes.add(ExtTrigSingle)
+            self.trigger_modes.add(ExtTrigMult)
         super().__init__()
 
-    def checkTrigMode(self, trig_mode):
-        return trig_mode in {IntTrig, ExtTrigSingle, ExtTrigMult, ExtGate}
+    def checkTrigMode(self, trigger_mode):
+        return trigger_mode in self.trigger_modes
 
-    def setTrigMode(self, trig_mode):
-        if not self.checkTrigMode(trig_mode):
+    def setTrigMode(self, trigger_mode):
+        if not self.checkTrigMode(trigger_mode):
             raise ValueError("Unsupported trigger mode")
-        if trig_mode == IntTrig:
-            self.detector.triggermode = False
-            self.detector.continuoustrigger = False
-            self.detector.gatemode = False
-        elif trig_mode == ExtTrigSingle:
-            self.detector.triggermode = True
-            self.detector.continuoustrigger = False
-            self.detector.gatemode = False
-        elif trig_mode == ExtTrigMult:
-            self.detector.triggermode = True
-            self.detector.continuoustrigger = True
-            self.detector.gatemode = False
-        elif trig_mode == ExtGate:
-            self.detector.gatemode = True
+        if trigger_mode == IntTrig:
+            self.detector["trigger_source"] = ETriggerSource.INTERNAL
+        elif trigger_mode == IntTrigMult:
+            self.detector["trigger_source"] = ETriggerSource.SOFTWARE
+        elif trigger_mode == ExtTrigSingle:
+            raise NotImplementedError
+        elif trigger_mode == ExtTrigMult:
+            raise NotImplementedError
+        elif trigger_mode == ExtGate:
+            raise NotImplementedError
 
     def getTrigMode(self):
-        if self.detector.gatemode:
-            return ExtGate
-        elif self.detector.triggermode:
-            return ExtTrigMult if self.detector.continuoustrigger else ExtTrigSingle
-        return IntTrig
-
+        trigger_source = self.detector["trigger_source"]
+        if trigger_source == ETriggerSource.INTERNAL:
+            return IntTrig
+        elif trigger_source == ETriggerSource.SOFTWARE:
+            return IntTrigMult
+        elif trigger_source == ETriggerSource.EXTERNAL:
+            raise NotImplementedError
+    
     def setExpTime(self, exp_time):
         self.detector["exposure_time"] = exp_time
 
     def getExpTime(self):
-        return self.detector["exposure_time"]
+        return self.detector["exposure_time"].value
 
     def setLatTime(self, lat_time):
         pass
@@ -79,11 +86,12 @@ class DetInfo(HwDetInfoCtrlObj):
 
     image_type = Bpp16
     ImageTypeMap = {
-        DCAM_PIXELTYPE.MONO8: Bpp8,
-        DCAM_PIXELTYPE.MONO12: Bpp12,
-        DCAM_PIXELTYPE.MONO16: Bpp16,
-        DCAM_PIXELTYPE.RGB24: RGB24,
-        DCAM_PIXELTYPE.BGR24: BGR24,
+        EPixelType.MONO8: Bpp8,
+        EPixelType.MONO12: Bpp12,
+        EPixelType.MONO12P: Bpp12,
+        EPixelType.MONO16: Bpp16,
+        EPixelType.RGB24: RGB24,
+        EPixelType.BGR24: BGR24,
     }
     PixelTypeMap = {v:k for v, k in ImageTypeMap.items()}
 
@@ -92,42 +100,37 @@ class DetInfo(HwDetInfoCtrlObj):
         super().__init__()
 
     def getMaxImageSize(self):
-        w = self.detector.capability_names["image_width"]
-        h = self.detector.capability_names["image_height"]
-        return Size(w["valuemax"], h["valuemax"])
+        w = self.detector["image_width"].max_value
+        h = self.detector["image_height"].max_value
+        return Size(w, h)
 
     def getDetectorImageSize(self):
-        w = self.detector["image_width"]
-        h = self.detector["image_height"]
+        w = self.detector["image_width"].value
+        h = self.detector["image_height"].value
         return Size(w, h)
 
     def getDefImageType(self):
         return Bpp16
 
     def getCurrImageType(self):
-        pixel_type = DCAM_PIXELTYPE(self.detector['image_pixel_type'])
+        pixel_type = self.detector["image_pixel_type"].value
         return self.ImageTypeMap[pixel_type]
 
     def setCurrImageType(self, image_type):
         if image_type not in self.PixelTypeMap:
             raise ValueError(f"Unsupported image type {image_type!r}")
         pixel_type = self.PixelTypeMap[image_type]
-        self.detector['image_pixel_type'] = pixel_type
+        self.detector["image_pixel_type"] = pixel_type
 
     def getPixelSize(self):
-        w_prop = self.detector.capability_names["image_detector_pixel_width"]
-        unit = DCAMPROPUNIT(w_prop['iUnit'])
-        width = unit.to_SI(self.detector["image_detector_pixel_width"])
-        h_prop = self.detector.capability_names["image_detector_pixel_height"]
-        unit = DCAMPROPUNIT(h_prop['iUnit'])
-        height = unit.to_SI(self.detector["image_detector_pixel_height"])
-        return width, height
+        """Pixel size (x, y). Units in meter"""
+        return self.detector.pixel_size
 
     def getDetectorType(self):
-        return self.detector.get_info()[DCAMIDSTR.VENDOR]
+        return self.detector.info[EIDString.VENDOR]
 
     def getDetectorModel(self):
-        return self.detector.get_info()[DCAMIDSTR.MODEL]
+        return self.detector.info[EIDString.MODEL]
 
     def registerMaxImageSizeCallback(self, cb):
         pass
@@ -185,6 +188,8 @@ class Acquisition:
             frame_infos.append(frame_info)
 
         with Stream(detector, nb_frames) as stream:
+            # From now we are fully prepared.
+            # Notify of that and wait for trigger to start
             self.prepared.set()
             self.start_trigger.wait()
             if self.stopped:
