@@ -1,18 +1,22 @@
+# -*- coding: utf-8 -*-
+#
+# This file is part of the hamamatsu project
+#
+# Copyright (c) 2021 Tiago Coutinho
+# Distributed under the GPLv3 license. See LICENSE for more info.
+
 """The setup script."""
 
 from setuptools import setup, find_packages
 
-with open('README.rst') as readme_file:
+with open('README.md') as readme_file:
     readme = readme_file.read()
 
-with open('HISTORY.rst') as history_file:
-    history = history_file.read()
-
-requirements = [ 'gevent', 'PyYAML']
+requirements = []
 
 extras = {
     'simulator': ['sinstruments>=1'],
-    'lima': ['lima-toolbox>=1', 'beautifultable>=1', 'click>=7'], 
+    'lima': ['lima-toolbox>=1', 'beautifultable>=1', 'click>=7'],
 }
 extras["all"] = list(set.union(*(set(i) for i in extras.values())))
 
@@ -26,14 +30,8 @@ setup(
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
         'Intended Audience :: Developers',
-        'License :: OSI Approved :: MIT License',
+        "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
         'Natural Language :: English',
-        "Programming Language :: Python :: 2",
-        'Programming Language :: Python :: 2.7',
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.4',
-        'Programming Language :: Python :: 3.5',
-        'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
@@ -41,8 +39,9 @@ setup(
     description="Python library to access Hamamatsu using DCAM or RemoteEX interface",
     install_requires=requirements,
     extras_require=extras,
-    license="MIT license",
-    long_description=readme + '\n\n' + history,
+    license="GNU General Public License v3",
+    long_description=readme,
+    long_description_content_type="text/markdown",
     include_package_data=True,
     keywords=['hamamatsu', 'remoteex', 'dcam', 'lima', 'simulator'],
     name='hamamatsu',

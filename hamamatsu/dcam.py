@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+#
+# This file is part of the hamamatsu project
+#
+# Copyright (c) 2021 Tiago Coutinho
+# Distributed under the GPLv3 license. See LICENSE for more info.
+
 import enum
 import ctypes
 import logging
@@ -555,7 +562,7 @@ class EOutputTriggerKind(enum.IntEnum):
 class EBinning(enum.IntEnum):
     ONExONE = 1
     TWOxTWO = 2
-    FOURxFOUR = 4 
+    FOURxFOUR = 4
     EIGHTxEIGHT = 8
     SIXTEENxSIXTEEN = 16
 
@@ -580,7 +587,7 @@ class EFrameBundleMode(enum.IntEnum):
 
 class EExposureTimeControl(enum.IntEnum):
     OFF = 1
-    NORMAL = 2    
+    NORMAL = 2
 
 
 class EDirectGainMode(enum.IntEnum):

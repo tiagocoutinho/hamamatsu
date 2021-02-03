@@ -2,8 +2,8 @@
 #
 # This file is part of the hamamatsu project
 #
-# Copyright (c) 2019 Tiago Coutinho & Vicente Rey Bakaikoa
-# Distributed under the MIT. See LICENSE for more info.
+# Copyright (c) 2021 Tiago Coutinho
+# Distributed under the GPLv3 license. See LICENSE for more info.
 
 """
 Hamamatsu simulator helper classes
