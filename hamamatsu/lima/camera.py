@@ -35,7 +35,7 @@ from hamamatsu.dcam import (
     dcam,
     Stream,
     ETriggerSource,
-    EPixelType,
+    EImagePixelType,
     EIDString,
     copy_frame,
 )
@@ -111,12 +111,12 @@ class DetInfo(HwDetInfoCtrlObj):
 
     image_type = Bpp16
     ImageTypeMap = {
-        EPixelType.MONO8: Bpp8,
-        EPixelType.MONO12: Bpp12,
-        EPixelType.MONO12P: Bpp12,
-        EPixelType.MONO16: Bpp16,
-        EPixelType.RGB24: RGB24,
-        EPixelType.BGR24: BGR24,
+        EImagePixelType.MONO8: Bpp8,
+        EImagePixelType.MONO12: Bpp12,
+        EImagePixelType.MONO12P: Bpp12,
+        EImagePixelType.MONO16: Bpp16,
+        EImagePixelType.RGB24: RGB24,
+        EImagePixelType.BGR24: BGR24,
     }
     PixelTypeMap = {v: k for v, k in ImageTypeMap.items()}
 

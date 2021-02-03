@@ -1,3 +1,4 @@
+import enum
 import struct
 import asyncio
 import contextlib
@@ -86,4 +87,34 @@ def hamamatsu_scan(timeout, table_style, max_width):
     style = getattr(table, "STYLE_" + table_style.upper())
     table.set_style(style)
     table.maxwidth = max_width
+    click.echo(table)
+
+
+@hamamatsu.command("dump")
+@table_style
+@max_width
+@click.pass_context
+def hamamatsu_dump(ctx, table_style, max_width):
+    """dump hamamatsu properties"""
+    camera = ctx.obj["camera"]
+
+    import beautifultable
+    table = beautifultable.BeautifulTable(maxwidth=max_width)
+    style = getattr(table, "STYLE_" + table_style.upper())
+    table.set_style(style)
+    table.columns.header = ["Name", "Value", "Unit", "DType"]
+
+    def rep(x):
+        if isinstance(x, enum.Enum):
+            return x.name
+        return x
+
+    pmap = {}
+    for prop in camera.values():
+        row = prop["name"], rep(prop.value), rep(prop.unit), rep(prop.dtype).lstrip("TYPE_").lower()
+        pmap[row[0]] = row
+
+    for name in sorted(pmap):
+        table.rows.append(pmap[name])
+
     click.echo(table)
