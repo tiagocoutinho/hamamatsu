@@ -77,7 +77,7 @@ class Sync(HwSyncCtrlObj):
             raise NotImplementedError
 
     def getTrigMode(self):
-        trigger_source = self.detector["trigger_source"]
+        trigger_source = self.detector["trigger_source"].value
         if trigger_source == ETriggerSource.INTERNAL:
             return IntTrig
         elif trigger_source == ETriggerSource.SOFTWARE:
