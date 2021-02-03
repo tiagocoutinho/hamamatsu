@@ -5,13 +5,39 @@ import threading
 import numpy
 
 from Lima.Core import (
-    HwInterface, HwDetInfoCtrlObj, HwSyncCtrlObj, HwBufferCtrlObj, HwCap,
-    HwFrameInfoType, SoftBufferCtrlObj, Size, FrameDim, Bpp8, Bpp12, Bpp16,
-    RGB24, BGR24, Timestamp, AcqReady, AcqRunning, CtControl, CtSaving,
-    IntTrig, IntTrigMult, ExtTrigSingle, ExtTrigMult, ExtGate)
+    HwInterface,
+    HwDetInfoCtrlObj,
+    HwSyncCtrlObj,
+    HwBufferCtrlObj,
+    HwCap,
+    HwFrameInfoType,
+    SoftBufferCtrlObj,
+    Size,
+    FrameDim,
+    Bpp8,
+    Bpp12,
+    Bpp16,
+    RGB24,
+    BGR24,
+    Timestamp,
+    AcqReady,
+    AcqRunning,
+    CtControl,
+    CtSaving,
+    IntTrig,
+    IntTrigMult,
+    ExtTrigSingle,
+    ExtTrigMult,
+    ExtGate,
+)
 
 from hamamatsu.dcam import (
-    dcam, Stream, ETriggerSource, EPixelType, EIDString, copy_frame
+    dcam,
+    Stream,
+    ETriggerSource,
+    EPixelType,
+    EIDString,
+    copy_frame,
 )
 
 
@@ -19,7 +45,6 @@ Status = HwInterface.StatusType
 
 
 class Sync(HwSyncCtrlObj):
-
     def __init__(self, detector):
         self.detector = detector
         self.nb_frames = 1
@@ -59,7 +84,7 @@ class Sync(HwSyncCtrlObj):
             return IntTrigMult
         elif trigger_source == ETriggerSource.EXTERNAL:
             raise NotImplementedError
-    
+
     def setExpTime(self, exp_time):
         self.detector["exposure_time"] = exp_time
 
@@ -79,7 +104,7 @@ class Sync(HwSyncCtrlObj):
         return self.nb_frames
 
     def getValidRanges(self):
-        return self.ValidRangesType(10E-9, 1E6, 10E-9, 1E6)
+        return self.ValidRangesType(10e-9, 1e6, 10e-9, 1e6)
 
 
 class DetInfo(HwDetInfoCtrlObj):
@@ -93,7 +118,7 @@ class DetInfo(HwDetInfoCtrlObj):
         EPixelType.RGB24: RGB24,
         EPixelType.BGR24: BGR24,
     }
-    PixelTypeMap = {v:k for v, k in ImageTypeMap.items()}
+    PixelTypeMap = {v: k for v, k in ImageTypeMap.items()}
 
     def __init__(self, detector):
         self.detector = detector
@@ -148,11 +173,10 @@ def gen_buffer(buffer_manager, nb_frames, frame_size):
 
 
 class Acquisition:
-
     def __init__(self, detector, buffer_manager, nb_frames, frame_dim):
         self.detector = detector
         self.buffer_manager = buffer_manager
-        self.nb_frames= nb_frames
+        self.nb_frames = nb_frames
         self.frame_dim = frame_dim
         self.nb_acquired_frames = 0
         self.status = Status.Ready
@@ -212,7 +236,6 @@ class Acquisition:
 
 
 class Interface(HwInterface):
-
     def __init__(self, detector):
         super().__init__()
         self.detector = detector

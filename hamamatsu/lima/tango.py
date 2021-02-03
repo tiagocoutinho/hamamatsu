@@ -18,13 +18,16 @@ class Hamamatsu(Device):
 
     def dev_state(self):
         status = self.mythen.status
-        return DevState.RUNNING if status  == "RUNNING" else DevState.ON
+        return DevState.RUNNING if status == "RUNNING" else DevState.ON
 
 
 def get_tango_specific_class_n_device():
     return Hamamatsu
 
+
 _HAMAMATSU = None
+
+
 def get_control(camera_id=None):
     global _HAMAMATSU
     if _HAMAMATSU is None:
@@ -38,8 +41,9 @@ def get_control(camera_id=None):
 
 def main():
     import Lima.Server.LimaCCDs
+
     Lima.Server.LimaCCDs.main()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

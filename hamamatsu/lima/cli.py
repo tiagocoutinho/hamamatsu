@@ -25,7 +25,7 @@ def hamamatsu(ctx, camera_id):
     dcam.open()
     camera = dcam[camera_id]
     camera.open()
-    ctx.obj['camera'] = camera
+    ctx.obj["camera"] = camera
     return Interface(camera)
 
 
@@ -40,12 +40,24 @@ def detector_table(detectors):
     width = click.get_terminal_size()[0]
     table = beautifultable.BeautifulTable(maxwidth=width)
 
-    table.columns.header = ["ID", "Vendor", "Model", "S/N", "Bus", "Version", "Driver", "Module", "API", "Series"]
+    table.columns.header = [
+        "ID",
+        "Vendor",
+        "Model",
+        "S/N",
+        "Bus",
+        "Version",
+        "Driver",
+        "Module",
+        "API",
+        "Series",
+    ]
     for i, detector in enumerate(detectors):
         info = collections.defaultdict(str)
         info.update(detector.info)
-        row = [i, 
-            info[EIDString.VENDOR], 
+        row = [
+            i,
+            info[EIDString.VENDOR],
             info[EIDString.MODEL],
             info[EIDString.CAMERAID],
             info[EIDString.BUS],
@@ -53,7 +65,7 @@ def detector_table(detectors):
             info[EIDString.DRIVERVERSION],
             info[EIDString.MODULEVERSION],
             info[EIDString.DCAMAPIVERSION],
-            info[EIDString.CAMERA_SERIESNAME]
+            info[EIDString.CAMERA_SERIESNAME],
         ]
         table.rows.append(row)
     return table
@@ -65,7 +77,7 @@ def scan(timeout=2.0):
 
 
 @hamamatsu.command("scan")
-@click.option('--timeout', default=2.0)
+@click.option("--timeout", default=2.0)
 @table_style
 @max_width
 def hamamatsu_scan(timeout, table_style, max_width):
