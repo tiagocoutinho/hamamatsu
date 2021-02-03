@@ -173,16 +173,18 @@ def gen_buffer(buffer_manager, nb_frames, frame_size):
 
 
 class Acquisition:
-    def __init__(self, detector, buffer_manager, nb_frames, frame_dim):
+    def __init__(self, detector, buffer_manager, nb_frames, frame_dim, trigger_mode):
         self.detector = detector
         self.buffer_manager = buffer_manager
         self.nb_frames = nb_frames
+        self.trigger_mode = trigger_mode
+        self.nb_frames_triggered = 0
         self.frame_dim = frame_dim
         self.nb_acquired_frames = 0
         self.status = Status.Ready
         self.stopped = False
         self.prepared = threading.Event()
-        self.start_trigger = threading.Event()
+        self.start_event = threading.Event()
         self.acq_thread = threading.Thread(target=self.acquire)
         self.acq_thread.daemon = True
         self.acq_thread.start()
@@ -191,12 +193,16 @@ class Acquisition:
         self.prepared.wait()
 
     def start(self):
-        self.start_trigger.set()
+        if self.start_event.is_set():
+            self.nb_frames_triggered += 1
+            self.detector.fire_software_trigger()
+        else:
+            self.start_event.set()
 
     def stop(self):
         self.stopped = True
         self.detector.stop()
-        self.start_trigger.set()
+        self.start_event.set()
         self.acq_thread.join()
 
     def acquire(self):
@@ -215,15 +221,17 @@ class Acquisition:
             # From now we are fully prepared.
             # Notify of that and wait for trigger to start
             self.prepared.set()
-            self.start_trigger.wait()
+            self.start_event.wait()
             if self.stopped:
                 self.status = Status.Ready
                 return
             start_time = time.time()
             self.detector.start()
-            self.status = Status.Exposure
             buffer_manager.setStartTimestamp(Timestamp(start_time))
+            if self.trigger_mode != IntTrigMult:
+                self.status = Status.Exposure
             for frame, buff, frame_info in zip(stream, buffers, frame_infos):
+                print("new frame arrived")
                 if self.stopped:
                     self.status = Status.Ready
                     return
@@ -231,7 +239,10 @@ class Acquisition:
                 copy_frame(frame, buff)
                 buffer_manager.newFrameReady(frame_info)
                 self.nb_acquired_frames += 1
-                self.status = Status.Exposure
+                if self.trigger_mode == IntTrigMult:
+                    self.status = Status.Ready
+                else:
+                    Status.Exposure
             self.status = Status.Ready
 
 
@@ -255,7 +266,10 @@ class Interface(HwInterface):
         nb_frames = self.sync.getNbHwFrames()
         frame_dim = self.buff.getFrameDim()
         buffer_manager = self.buff.getBuffer()
-        self.acq = Acquisition(self.detector, buffer_manager, nb_frames, frame_dim)
+        trigger_mode = self.sync.getTrigMode()
+        self.acq = Acquisition(
+            self.detector, buffer_manager, nb_frames, frame_dim, trigger_mode
+        )
         self.acq.wait_until_prepared()
 
     def startAcq(self):
