@@ -1905,30 +1905,8 @@ class Device:
         return width, height
 
     # trigger
-    '''
     def fire_software_trigger(self):
         self._lib.dcamcap_firetrigger(self._handle, 0)
-
-    @property
-    def trigger_source(self):
-        return ETriggerSource(self["trigger_source"])
-
-    @trigger_source.setter
-    def trigger_source(self, value):
-        self["trigger_source"] = ETriggerSource(value)
-
-    @property
-    def trigger_sources(self):
-        """All supported trigger sources"""
-        return [
-            ETriggerSource(i) 
-            for i in self.capability_names["trigger_source"]["enum_values"]
-        ]
-
-    @property
-    def system_alive(self):
-        return ESystemAlive(self["system_alive"])
-    '''
 
 
 class DCAM:
