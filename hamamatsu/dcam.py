@@ -1470,11 +1470,36 @@ class Device:
         except:
             pass
 
-    def _build_capabilities(self):
-        prop_id = ctypes.c_int32(0)
+    def _build_capability(self, prop_id):
         buff_size = ctypes.c_int32(64)
         buff = ctypes.create_string_buffer(buff_size.value)
+        self._lib.dcamprop_getname(self._handle, prop_id, buff, buff_size)
+        eprop = EProp(prop_id.value)
+        prop_name = buff.value.decode()
+        prop_uname = prop_name.lower().replace(" ", "_")
+        attr_dict = Attribute(name=prop_name, uname=prop_uname, prop=eprop)
+        attr = Attr()
+        attr.cbSize = ctypes.sizeof(attr)
+        attr.iProp = prop_id.value
+        self._lib.dcamprop_getattr(self._handle, ctypes.byref(attr))
+        attr_dict["attribute"] = EPropAttr(attr.attribute)
+        attr_dict["id"] = attr.iProp
+        attr_dict["unit"] = EUnit(attr.iUnit)
+        attr_dict["min_value"] = attr.valuemin
+        attr_dict["max_value"] = attr.valuemax
+        attr_dict["step_value"] = attr.valuestep
+        attr_dict["default_value"] = attr.valuedefault
+        attr_dict["max_view"] = attr.nMaxView
+        attr_dict["max_channel"] = attr.nMaxChannel
+        attr_dict["dtype"] = attr.attribute & EPropAttr.TYPE_MASK
+        attr_dict["read"], attr_dict["write"] = self._make_read_write(attr_dict)
+        if EPropAttr.HASVALUETEXT in attr_dict["attribute"]:
+            attr_dict["enum"] = self._get_property_options(attr_dict)
+            attr_dict["enum_values"] = {v: k for k, v in attr_dict["enum"].items()}
+        return attr_dict
 
+    def _build_capabilities(self):
+        prop_id = ctypes.c_int32(0)
         capabilities = {}
         capability_names = {}
         while True:
@@ -1488,32 +1513,14 @@ class Device:
                 break
             if not prop_id.value:
                 break
-            self._lib.dcamprop_getname(self._handle, prop_id, buff, buff_size)
-            eprop = EProp(prop_id.value)
-            prop_name = buff.value.decode()
-            prop_uname = prop_name.lower().replace(" ", "_")
-            attr_dict = Attribute(name=prop_name, uname=prop_uname, prop=eprop)
-            capabilities[eprop] = attr_dict
-            capability_names[prop_name] = attr_dict
-            capability_names[prop_uname] = attr_dict
-            attr = Attr()
-            attr.cbSize = ctypes.sizeof(attr)
-            attr.iProp = prop_id.value
-            self._lib.dcamprop_getattr(self._handle, ctypes.byref(attr))
-            attr_dict["attribute"] = EPropAttr(attr.attribute)
-            attr_dict["id"] = attr.iProp
-            attr_dict["unit"] = EUnit(attr.iUnit)
-            attr_dict["min_value"] = attr.valuemin
-            attr_dict["max_value"] = attr.valuemax
-            attr_dict["step_value"] = attr.valuestep
-            attr_dict["default_value"] = attr.valuedefault
-            attr_dict["max_view"] = attr.nMaxView
-            attr_dict["max_channel"] = attr.nMaxChannel
-            attr_dict["dtype"] = dtype = attr.attribute & EPropAttr.TYPE_MASK
-            attr_dict["read"], attr_dict["write"] = self._make_read_write(attr_dict)
-            if EPropAttr.HASVALUETEXT in attr_dict["attribute"]:
-                attr_dict["enum"] = self._get_property_options(attr_dict)
-                attr_dict["enum_values"] = {v: k for k, v in attr_dict["enum"].items()}
+            try:
+                cap = self._build_capability(prop_id)
+            except Exception as error:
+                logging.warning("Could not build capability 0x%X: %r", prop_id.value, error)
+            else:
+                capabilities[cap["prop"]] = cap
+                capability_names[cap["name"]] = cap
+                capability_names[cap["uname"]] = cap
         self.capabilities = capabilities
         self.capability_names = capability_names
 
@@ -1521,7 +1528,6 @@ class Device:
         eprop = cap["prop"]
         dtype = cap["dtype"]
         cid = cap["id"]
-        name = cap["uname"]
         enum_type = eprop.to_enum()
         if enum_type is not None:
             decode = lambda v: enum_type(int(v))
