@@ -96,7 +96,7 @@
   <body>
     <div>
       <div class="fileinformation">
-		<div>v19.2.5719</div>
+		<div>v21.6.6291</div>
 	</div>
     </div>
     <div><a class="go-top" href="#Chapter_appendix_detail"></a></div>
@@ -662,7 +662,7 @@
                     </tr>
                     <tr>
                       <td width="5%" class="prop_indent"></td>
-                      <td>0 to 10
+                      <td>0 to 10.0
         , step 0.000001
         , default 0</td>
                       <td colspan="6">@ DCAMPROP_SENSORMODE__AREA</td>
@@ -672,7 +672,80 @@
                       <td>0 to 0.008119552
         , step 0.000012608
         , default 0</td>
-                      <td colspan="6">@ DCAMPROP_SENSORMODE__PROGRESSIVE<br>Changed by Line Rate and Pre Hsync Count</td>
+                      <td colspan="6">@ DCAMPROP_SENSORMODE__PROGRESSIVE<br>Depends on INTERNALLINESPEED and INTERNAL_LINEINTERVAL, OUTPUTTRIGGER_PREHSYNCCOUNT</td>
+                    </tr>
+                    <tr>
+                      <td width="100%" colspan="8">
+                        <div class="prop_groupname">Sensor cooler</div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td width="55%" colspan="2">
+                        <div class="prop_id">DCAM_IDPROP_SENSORCOOLER (at Water Cooling only)</div>
+                      </td>
+                      <td width="5%" align="center">
+                        <div class="prop_id">-</div>
+                      </td>
+                      <td width="5%" align="center">
+                        <div class="prop_id">R</div>
+                      </td>
+                      <td width="5%" align="center">
+                        <div class="prop_id">W</div>
+                      </td>
+                      <td width="5%" align="center">
+                        <div class="prop_id">W</div>
+                      </td>
+                      <td width="5%" align="center">
+                        <div class="prop_id">W</div>
+                      </td>
+                      <td width="20%">
+                        <div class="prop_id">MODE</div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td width="5%" class="prop_indent"></td>
+                      <td>DCAMPROP_SENSORCOOLER__OFF</td>
+                      <td colspan="6">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td width="5%" class="prop_indent"></td>
+                      <td>DCAMPROP_SENSORCOOLER__ON</td>
+                      <td colspan="6">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td width="55%" colspan="2">
+                        <div class="prop_id">DCAM_IDPROP_SENSORCOOLERSTATUS</div>
+                      </td>
+                      <td width="5%" align="center">
+                        <div class="prop_id">-</div>
+                      </td>
+                      <td width="5%" align="center">
+                        <div class="prop_id">R</div>
+                      </td>
+                      <td width="5%" align="center">
+                        <div class="prop_id">-</div>
+                      </td>
+                      <td width="5%" align="center">
+                        <div class="prop_id">-</div>
+                      </td>
+                      <td width="5%" align="center">
+                        <div class="prop_id">-</div>
+                      </td>
+                      <td width="20%">
+                        <div class="prop_id">MODE</div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td width="5%" class="prop_indent"></td>
+                      <td>DCAMPROP_SENSORCOOLERSTATUS__READY</td>
+                      <td colspan="6">@ Air Cooling</td>
+                    </tr>
+                    <tr>
+                      <td width="5%" class="prop_indent"></td>
+                      <td>DCAMPROP_SENSORCOOLERSTATUS__OFF</td>
+                      <td colspan="6">@ Water Cooling</td>
                     </tr>
                     <tr>
                       <td width="100%" colspan="8">
@@ -908,8 +981,7 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>DCAMPROP_MODE__ON</td>
-                      <td colspan="6">
-                      </td>
+                      <td colspan="6">Depends on SUBARRAY properties</td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -939,7 +1011,7 @@
                       <td>2 to 18662
         , step 1
         , default 2</td>
-                      <td colspan="6">Changed by Subarray</td>
+                      <td colspan="6">Depends on SUBARRAY properties</td>
                     </tr>
                     <tr>
                       <td width="100%" colspan="8">
@@ -973,24 +1045,24 @@
                     </tr>
                     <tr>
                       <td width="5%" class="prop_indent"></td>
-                      <td>0.000012608 to 1.000003520
-        , step 0.000000010
-        , default 0.008195200</td>
-                      <td colspan="6">@ DCAMPROP_SENSORMODE__AREA<br>@ DCAMPROP_BITSPERCHANNEL__12<br>Changed by Subarray</td>
+                      <td>0.000012608 to 1.00000352
+        , step 0.00000001
+        , default 0.0081952</td>
+                      <td colspan="6">@ DCAMPROP_SENSORMODE__AREA and DCAMPROP_BITSPERCHANNEL__12<br>Depends on SUBARRAY properties</td>
                     </tr>
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>0.000050432 to 1.000001613
-        , step 0.000000010
-        , default 0.008195200</td>
-                      <td colspan="6">@ DCAMPROP_SENSORMODE__AREA<br>@ DCAMPROP_BITSPERCHANNEL__16</td>
+        , step 0.00000001
+        , default 0.0081952</td>
+                      <td colspan="6">@ DCAMPROP_SENSORMODE__AREA and DCAMPROP_BITSPERCHANNEL__16</td>
                     </tr>
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>0.000012608 to 0.008169984
-        , step 0.000000010
+        , step 0.00000001
         , default 0.008169984</td>
-                      <td colspan="6">@ DCAMPROP_SENSORMODE__PROGRESSIVE<br>Changed by Subarray and Line Rate</td>
+                      <td colspan="6">@ DCAMPROP_SENSORMODE__PROGRESSIVE<br>Depends on INTERNALLINESPEED and INTERNAL_LINEINTERVAL, SUBARRAY properties</td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -1096,7 +1168,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return 3</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -1124,12 +1197,14 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>DCAMPROP_OUTPUTTRIGGER_SOURCE__READOUTEND</td>
-                      <td colspan="6">ALL DCAM_IDPROP_SENSORMODE</td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>DCAMPROP_OUTPUTTRIGGER_SOURCE__VSYNC (default)</td>
-                      <td colspan="6">ALL DCAM_IDPROP_SENSORMODE</td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="5%" class="prop_indent"></td>
@@ -1227,7 +1302,7 @@
                     </tr>
                     <tr>
                       <td width="5%" class="prop_indent"></td>
-                      <td>0 to 10
+                      <td>0 to 10.0
         , step 0.000001
         , default 0</td>
                       <td colspan="6">
@@ -1260,7 +1335,7 @@
                     </tr>
                     <tr>
                       <td width="5%" class="prop_indent"></td>
-                      <td>0.000001 to 10
+                      <td>0.000001 to 10.0
         , step 0.000001
         , default 0.000001</td>
                       <td colspan="6">
@@ -1383,7 +1458,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return seconds how long takes to reading out a frame.</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -1413,7 +1489,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return seconds which period cyclic trigger happens in.</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -1443,7 +1520,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return seconds required minimum trigger blanking.</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -1473,7 +1551,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return seconds required minimum trigger interval.</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -1503,7 +1582,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return seconds how long takes to start global exposure.</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -1562,7 +1642,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return seconds of period which exposure is not started from trigger.</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -1575,13 +1656,13 @@
                         <div class="prop_id">R</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">W</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">W</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">W</div>
                       </td>
                       <td width="20%">
                         <div class="prop_id">REAL
@@ -1592,7 +1673,12 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return number of frames per second in INTERNAL trigger mode.</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">@ DCAMPROP_SENSORMODE__AREA<br>Read Only when sensor mode is AREA.</td>
+                    </tr>
+                    <tr>
+                      <td width="5%" class="prop_indent"></td>
+                      <td>40.757821589 to 60.91760431, step 0</td>
+                      <td colspan="6">@ DCAMPROP_SENSORMODE__PROGRESSIVE<br>Depends on INTERNALLINESPEED and INTERNAL_LINEINTERVAL</td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -1605,13 +1691,13 @@
                         <div class="prop_id">R</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">W</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">W</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">W</div>
                       </td>
                       <td width="20%">
                         <div class="prop_id">REAL
@@ -1622,7 +1708,12 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return seconds of interval between frames in INTERNAL trigger mode.</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">@ DCAMPROP_SENSORMODE__AREA<br>Read Only when sensor mode is AREA.</td>
+                    </tr>
+                    <tr>
+                      <td width="5%" class="prop_indent"></td>
+                      <td>0.016415616 to 0.024535168, step 0</td>
+                      <td colspan="6">@ DCAMPROP_SENSORMODE__PROGRESSIVE<br>Depends on INTERNALLINESPEED and INTERNAL_LINEINTERVAL</td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -1635,13 +1726,13 @@
                         <div class="prop_id">R</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">W</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">W</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">W</div>
                       </td>
                       <td width="20%">
                         <div class="prop_id">REAL
@@ -1652,7 +1743,12 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return speed on the sensor.</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">@ DCAMPROP_SENSORMODE__AREA<br>Read Only when sensor mode is AREA.</td>
+                    </tr>
+                    <tr>
+                      <td width="5%" class="prop_indent"></td>
+                      <td>0.0275 to 0.436230964, step 0.00000088</td>
+                      <td colspan="6">@ DCAMPROP_SENSORMODE__PROGRESSIVE</td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -1665,13 +1761,13 @@
                         <div class="prop_id">R</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">W</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">W</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">W</div>
                       </td>
                       <td width="20%">
                         <div class="prop_id">REAL
@@ -1682,7 +1778,12 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return seconds of interval between two lines timings.</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">@ DCAMPROP_SENSORMODE__AREA<br>Read Only when sensor mode is AREA.</td>
+                    </tr>
+                    <tr>
+                      <td width="5%" class="prop_indent"></td>
+                      <td>0.000012608 to 0.0002, step 0.000000006</td>
+                      <td colspan="6">@ DCAMPROP_SENSORMODE__PROGRESSIVE</td>
                     </tr>
                     <tr>
                       <td width="100%" colspan="8">
@@ -1777,7 +1878,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return width pixel of current setting</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -1805,7 +1907,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return height line of current setting</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -1833,7 +1936,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return horizontal rowbytes of current setting</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -1861,7 +1965,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return bytes per frame of current setting</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -1889,7 +1994,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return offset bytes size to point first data in image</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -1950,7 +2056,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return row byte size of user attached buffer</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -1978,7 +2085,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return byte size of a frame buffer that should be allocated when you use dcambuf_attach() function</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -2006,7 +2114,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return unnecessary data size in front of the actual image data</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -2067,7 +2176,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return additional data size per a file</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -2095,7 +2205,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return additional data size per a session</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -2123,7 +2234,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return additional data size per a frame</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -2151,7 +2263,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return horizontal rowbytes of current setting</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -2179,7 +2292,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return bytes of gap between two frames in a same frame bundle</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -2243,8 +2357,9 @@
                     </tr>
                     <tr>
                       <td width="5%" class="prop_indent"></td>
-                      <td>return 5.500000</td>
-                      <td colspan="6"></td>
+                      <td>return 5.5</td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -2273,8 +2388,9 @@
                     </tr>
                     <tr>
                       <td width="5%" class="prop_indent"></td>
-                      <td>return 5.500000</td>
-                      <td colspan="6"></td>
+                      <td>return 5.5</td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -2302,7 +2418,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return 4608</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -2330,7 +2447,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return 2592</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">

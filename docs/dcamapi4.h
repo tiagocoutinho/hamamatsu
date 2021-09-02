@@ -1,6 +1,8 @@
 /* **************************************************************** *
 
-	dcamapi4.h:	Aug 30, 2018
+	dcamapi4.h:	Jun 18, 2021
+
+	Copyright (C) 2011 - 2021 Hamamatsu Photonics K.K.. All right reserved.
 
  * **************************************************************** */
 
@@ -64,7 +66,7 @@ typedef struct tag_dcam* HDCAM;
 
 /* define - int32 & _ui32 */
 
-#if defined( WIN32 ) || defined( _INC_WINDOWS )
+#if defined(_WIN32) || defined(WIN32) || defined(_INC_WINDOWS)
 typedef	long			int32;
 typedef	unsigned long	_ui32;
 #else
@@ -117,11 +119,12 @@ DCAM_DECLARE_BEGIN( enum, DCAMERR )
 	DCAMERR_NOCOMBINATION		= 0x80000208,/*		no combination on registry	*/
 
 	DCAMERR_FAILOPEN			= 0x80001001,/* DEPRECATED */
+	DCAMERR_FRAMEGRABBER_NEEDS_FIRMWAREUPDATE = 0x80001002,/*	need to update frame grabber firmware to use the camera	*/
 	DCAMERR_INVALIDMODULE		= 0x80000211,/*		dcam_init() found invalid module	*/
 	DCAMERR_INVALIDCOMMPORT		= 0x80000212,/*		invalid serial port		*/
 	DCAMERR_FAILOPENBUS			= 0x81001001,/*		the bus or driver are not available	*/
 	DCAMERR_FAILOPENCAMERA		= 0x82001001,/*		 camera report error during opening	*/
-	DCAMERR_FRAMEGRABBER_NEEDS_FIRMWAREUPDATE = 0x80001002,/*	need to update frame grabber firmware to use the camera	*/
+	DCAMERR_DEVICEPROBLEM		= 0x82001002,/*		initialization failed(for maico)	*/
 
 	/* calling error */
 	DCAMERR_INVALIDCAMERA		= 0x80000806,/*		invalid camera			*/
@@ -148,8 +151,10 @@ DCAM_DECLARE_BEGIN( enum, DCAMERR )
 	DCAMERR_NOCORRECTIONDATA	= 0x80000838,/*		not take the dark and shading correction data yet.	*/
 	DCAMERR_CHANNELDEPENDENTVALUE= 0x80000839,/*	each channel has own property value so can't return overall property value.	*/
 	DCAMERR_VIEWDEPENDENTVALUE	= 0x8000083a,/*		each view has own property value so can't return overall property value.	*/
-	DCAMERR_INVALIDCALIBSETTING	= 0x8000083e,/*		the setting of properties are invalid on sampling calibration data. some camera has the limitation to make calibration data. e.g. the trigger source is INTERNAL only and read out direction isn't trigger.	*/
+	DCAMERR_NODEVICEBUFFER	= 0x8000083b,/*		the frame count is larger than device momory size on using device memory.	*/
+	DCAMERR_REQUIREDSNAP	= 0x8000083c,/*		the capture mode is sequence on using device memory.	*/
 	DCAMERR_LESSSYSTEMMEMORY	= 0x8000083f,/*		the sysmte memory size is too small. PC doesn't have enough memory or is limited memory by 32bit OS.	*/
+
 	DCAMERR_NOTSUPPORT			= 0x80000f03,/*		camera does not support the function or property with current settings	*/
 
 	/* camera or bus trouble */
@@ -158,6 +163,8 @@ DCAM_DECLARE_BEGIN( enum, DCAMERR )
 	DCAMERR_CONFLICTCOMMPORT	= 0x83001004,/*		conflict the com port name user set	*/
 	DCAMERR_OPTICS_UNPLUGGED	= 0x83001005,/* 	Optics part is unplugged so please check it.	*/
 	DCAMERR_FAILCALIBRATION		= 0x83001006,/*		fail calibration	*/
+
+	DCAMERR_MISMATCH_CONFIGURATION= 0x83001011,/*	mismatch between camera output(connection) and frame grabber specs */
 
 	/* 0x84000100 - 0x840001FF, DCAMERR_INVALIDMEMBER_x */
 	DCAMERR_INVALIDMEMBER_3		= 0x84000103,/*		3th member variable is invalid value	*/
@@ -173,7 +180,6 @@ DCAM_DECLARE_BEGIN( enum, DCAMERR )
 	DCAMERR_WRITEFULL			= 0x84001006,/*		DCAMREC writes full frame of the session	*/
 	DCAMERR_ALREADYOCCUPIED		= 0x84001007,/*		DCAMREC handle is already occupied by other HDCAM	*/
 	DCAMERR_TOOLARGEUSERDATASIZE= 0x84001008,/*		DCAMREC is set the large value to user data size	*/
-	DCAMERR_NOIMAGE				= 0x84001804,/*		not stored image in buffer on bufrecord */
 	DCAMERR_INVALIDWAITHANDLE	= 0x84002001,/*		DCAMWAIT is invalid handle	*/
 	DCAMERR_NEWRUNTIMEREQUIRED	= 0x84002002,/*		DCAM Module Version is older than the version that the camera requests	*/
 	DCAMERR_VERSIONMISMATCH		= 0x84002003,/*		Camre returns the error on setting parameter to limit version	*/
@@ -201,6 +207,10 @@ DCAM_DECLARE_BEGIN( enum, DCAMERR )
 
 	DCAMERR_NOTIMPLEMENT		= 0x80000f02,/*		not yet implementation				*/
 
+	DCAMERR_DELAYEDFRAME = 0x80000f09,/*	the frame waiting re-load from hardware buffer with SNAPSHOT of DEVICEBUFFER MODE */
+
+	DCAMERR_DEVICEINITIALIZING	= 0xb0000001,
+
 	DCAMERR_APIINIT_INITOPTIONBYTES	= 0xa4010003,/*	DCAMAPI_INIT::initoptionbytes is invalid	*/
 	DCAMERR_APIINIT_INITOPTION		= 0xa4010004,/*	DCAMAPI_INIT::initoption is invalid	*/
 
@@ -209,6 +219,8 @@ DCAM_DECLARE_BEGIN( enum, DCAMERR )
 
 	/* Between DCAMERR_INITOPTION_COLLISION_BASE and DCAMERR_INITOPTION_COLLISION_MAX means there is collision with initoption in DCAMAPI_INIT. */
 	/* The value "(error code) - DCAMERR_INITOPTION_COLLISION_BASE" indicates the index which second INITOPTION group happens. */
+
+	DCAMERR_MISSPROP_TRIGGERSOURCE	= 0xE0100110,/*		the trigger mode is internal or syncreadout on using device memory. */
 
 	/* success */
 	DCAMERR_SUCCESS				= 1			/*		no error, general success code, app should check the value is positive	*/
@@ -274,7 +286,6 @@ DCAM_DECLARE_END( DCAMREC_METADATAOPTION )
 
 DCAM_DECLARE_BEGIN( enum, DCAM_PIXELTYPE )
 {
-
 	DCAM_PIXELTYPE_MONO8		= 0x00000001,
 	DCAM_PIXELTYPE_MONO16		= 0x00000002,
 	DCAM_PIXELTYPE_MONO12		= 0x00000003,
@@ -327,6 +338,7 @@ DCAM_DECLARE_BEGIN( enum, DCAMWAIT_EVENT )
 	DCAMWAIT_CAPEVENT_CYCLEEND			= 0x0004,	/* all modules support	*/
 	DCAMWAIT_CAPEVENT_EXPOSUREEND		= 0x0008,
 	DCAMWAIT_CAPEVENT_STOPPED			= 0x0010,
+	DCAMWAIT_CAPEVENT_RELOADFRAME		= 0x0020,
 
 	DCAMWAIT_RECEVENT_STOPPED			= 0x0100,
 	DCAMWAIT_RECEVENT_WARNING			= 0x0200,
@@ -360,6 +372,10 @@ DCAM_DECLARE_BEGIN( enum, DCAM_IDSTR )
 	DCAM_IDSTR_DRIVERVERSION			= 0x04000106,
 	DCAM_IDSTR_MODULEVERSION			= 0x04000107,
 	DCAM_IDSTR_DCAMAPIVERSION			= 0x04000108,
+	DCAM_IDSTR_SUBUNIT_INFO1			= 0x04000110,
+	DCAM_IDSTR_SUBUNIT_INFO2			= 0x04000111,
+	DCAM_IDSTR_SUBUNIT_INFO3			= 0x04000112,
+	DCAM_IDSTR_SUBUNIT_INFO4			= 0x04000113,
 
 	DCAM_IDSTR_CAMERA_SERIESNAME		= 0x0400012c,
 
@@ -528,7 +544,6 @@ DCAM_DECLARE_BEGIN( enum, DCAMDEV_CAPFLAG )
 	DCAMDEV_CAPFLAG_NONE					= 0x00000000
 }
 DCAM_DECLARE_END( DCAMDEV_CAPFLAG )
-
 DCAM_DECLARE_BEGIN( enum, DCAMREC_STATUSFLAG )
 {
 	DCAMREC_STATUSFLAG_NONE					= 0x00000000,
@@ -606,6 +621,7 @@ DCAM_DECLARE_BEGIN( struct, DCAMDEV_CAPABILITY_REGION )
 	int32				vertunit;				// [out] vertical step
 }
 DCAM_DECLARE_END( DCAMDEV_CAPABILITY_REGION )
+
 DCAM_DECLARE_BEGIN( struct, DCAMDEV_CAPABILITY_FRAMEOPTION )
 {
 	DCAMDEV_CAPABILITY	hdr;					// [in] size:		size of this structure
@@ -805,7 +821,7 @@ DCAM_DECLARE_BEGIN( struct, DCAMWAIT_START)
 }
 DCAM_DECLARE_END( DCAMWAIT_START )
 
-#ifdef _WIN32
+#if defined(_WIN32) || defined(WIN32)
 
 DCAM_DECLARE_BEGIN( struct, DCAMREC_OPENA )
 {
@@ -1041,7 +1057,7 @@ DCAMERR DCAMAPI dcamwait_start			( HDCAMWAIT hWait, DCAMWAIT_START* param );
 DCAMERR DCAMAPI dcamwait_abort			( HDCAMWAIT hWait );
 
 // Recording
-#ifdef _WIN32
+#if defined(_WIN32) || defined(WIN32)
 DCAMERR DCAMAPI dcamrec_openA			( DCAMREC_OPENA* param );
 DCAMERR DCAMAPI dcamrec_openW			( DCAMREC_OPENW* param );
 

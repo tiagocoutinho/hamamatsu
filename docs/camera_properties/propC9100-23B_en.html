@@ -96,7 +96,7 @@
   <body>
     <div>
       <div class="fileinformation">
-		<div>v19.2.5719</div>
+		<div>v21.6.6291</div>
 	</div>
     </div>
     <div><a class="go-top" href="#Chapter_appendix_detail"></a></div>
@@ -673,8 +673,8 @@
                     </tr>
                     <tr>
                       <td width="5%" class="prop_indent"></td>
-                      <td>0 to 10.000000
-        , step 0.000010
+                      <td>0 to 10.0
+        , step 0.00001
         , default 0</td>
                       <td colspan="6">
                       </td>
@@ -747,11 +747,12 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>-100 to 50</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
-                        <div class="prop_id">DCAM_IDPROP_SENSORCOOLER (Air cooling)</div>
+                        <div class="prop_id">DCAM_IDPROP_SENSORCOOLER (at Air Cooling)</div>
                       </td>
                       <td width="5%" align="center">
                         <div class="prop_id">-</div>
@@ -786,7 +787,7 @@
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
-                        <div class="prop_id">DCAM_IDPROP_SENSORCOOLER (Water cooling)</div>
+                        <div class="prop_id">DCAM_IDPROP_SENSORCOOLER (at Water Cooling)</div>
                       </td>
                       <td width="5%" align="center">
                         <div class="prop_id">-</div>
@@ -855,14 +856,14 @@
                       <td>-100 to -65
         , step 35
         , default -65</td>
-                      <td colspan="6">Air cooling</td>
+                      <td colspan="6">@ Air Cooling</td>
                     </tr>
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>-100 to -80
         , step 20
         , default -80</td>
-                      <td colspan="6">Water cooling</td>
+                      <td colspan="6">@ Water Cooling</td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -890,7 +891,7 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>DCAMPROP_SENSORCOOLERSTATUS__OFF</td>
-                      <td colspan="6">Water cooling</td>
+                      <td colspan="6">@ Water Cooling</td>
                     </tr>
                     <tr>
                       <td width="5%" class="prop_indent"></td>
@@ -1039,8 +1040,8 @@
                     </tr>
                     <tr>
                       <td width="5%" class="prop_indent"></td>
-                      <td>0 to 255
-        , step 1
+                      <td>0 to 255.0
+        , step 1.0
         , default 0</td>
                       <td colspan="6">
                       </td>
@@ -1118,7 +1119,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>0 to 1200</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -1575,24 +1577,24 @@
                     </tr>
                     <tr>
                       <td width="5%" class="prop_indent"></td>
-                      <td>0.00001 to 1
+                      <td>0.0139 to 1.0
         , step 0.00001
-        , default 0.013900</td>
+        , default 0.0139</td>
                       <td colspan="6">@ DCAM_IDPROP_READOUTSPEED = 3</td>
                     </tr>
                     <tr>
                       <td width="5%" class="prop_indent"></td>
-                      <td>0.00001 to 7200
+                      <td>0.02713 to 7200.0
         , step 0.00001
         , default 0.02713</td>
                       <td colspan="6">@ DCAM_IDPROP_READOUTSPEED = 2</td>
                     </tr>
                     <tr>
                       <td width="5%" class="prop_indent"></td>
-                      <td>0.00001 to 7200
+                      <td>0.42147 to 7200.0
         , step 0.00001
-        , default 0.042147</td>
-                      <td colspan="6">@ DCAM_IDPROP_READOUTSPEED = 1</td>
+        , default 0.42147</td>
+                      <td colspan="6">@ DCAM_IDPROP_READOUTSPEED = 1 or DCAMPROP_CCDMODE__NORMALCCD</td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -1605,13 +1607,13 @@
                         <div class="prop_id">R</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">W</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">W</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">W</div>
                       </td>
                       <td width="20%">
                         <div class="prop_id">MODE</div>
@@ -1619,7 +1621,12 @@
                     </tr>
                     <tr>
                       <td width="5%" class="prop_indent"></td>
-                      <td>DCAMPROP_MODE__OFF</td>
+                      <td>DCAMPROP_MODE__OFF (default)</td>
+                      <td colspan="6">Cannot change to ON when DCAM_IDPROP_READOUTSPEED = 3 or DCAMPROP_CCDMODE__NORMALCCD</td>
+                    </tr>
+                    <tr>
+                      <td width="5%" class="prop_indent"></td>
+                      <td>DCAMPROP_MODE__ON</td>
                       <td colspan="6">
                       </td>
                     </tr>
@@ -1669,13 +1676,13 @@
                         <div class="prop_id">R</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">W</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">W</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">W</div>
                       </td>
                       <td width="20%">
                         <div class="prop_id">LONG</div>
@@ -2072,7 +2079,7 @@
                         <div class="prop_id">W</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">W</div>
                       </td>
                       <td width="5%" align="center">
                         <div class="prop_id">-</div>
@@ -2165,7 +2172,7 @@
                         <div class="prop_id">W</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">W</div>
                       </td>
                       <td width="5%" align="center">
                         <div class="prop_id">-</div>
@@ -2308,7 +2315,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return 3</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -2430,8 +2438,8 @@
                     </tr>
                     <tr>
                       <td width="5%" class="prop_indent"></td>
-                      <td>0 to 10.000000
-        , step 0.000010
+                      <td>0 to 10.0
+        , step 0.00001
         , default 0</td>
                       <td colspan="6">
                       </td>
@@ -2463,9 +2471,9 @@
                     </tr>
                     <tr>
                       <td width="5%" class="prop_indent"></td>
-                      <td>0.000010 to 7200
-        , step 0.000010
-        , default 0.001000</td>
+                      <td>0.00001 to 7200.0
+        , step 0.00001
+        , default 0.001</td>
                       <td colspan="6">
                       </td>
                     </tr>
@@ -2555,7 +2563,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return seconds how long takes to reading out a frame.</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -2585,7 +2594,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return seconds which period cyclic trigger happens in.</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -2615,7 +2625,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return seconds required minimum trigger blanking.</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -2645,7 +2656,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return seconds required minimum trigger interval.</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -2710,7 +2722,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return seconds of period which exposure is not started from trigger.</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -2740,7 +2753,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return number of frames per second in INTERNAL trigger mode.</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -2770,7 +2784,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return seconds of interval between frames in INTERNAL trigger mode.</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="100%" colspan="8">
@@ -2832,7 +2847,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return 16</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -2860,7 +2876,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return width pixel of current setting</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -2888,7 +2905,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return height line of current setting</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -2916,7 +2934,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return horizontal rowbytes of current setting</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -2944,7 +2963,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return bytes per frame of current setting</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -2972,7 +2992,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return offset bytes size to point first data in image</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -3008,7 +3029,7 @@
                         <div class="prop_id">DCAM_IDPROP_IMAGE_CAMERASTAMP</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">4.0</div>
                       </td>
                       <td width="5%" align="center">
                         <div class="prop_id">R</div>
@@ -3039,7 +3060,7 @@
                         <div class="prop_id">DCAM_IDPROP_BUFFER_ROWBYTES</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">4.0</div>
                       </td>
                       <td width="5%" align="center">
                         <div class="prop_id">R</div>
@@ -3060,14 +3081,15 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return row byte size of user attached buffer</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
                         <div class="prop_id">DCAM_IDPROP_BUFFER_FRAMEBYTES</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">4.0</div>
                       </td>
                       <td width="5%" align="center">
                         <div class="prop_id">R</div>
@@ -3088,14 +3110,15 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return byte size of a frame buffer that should be allocated when you use dcambuf_attach() function</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
                         <div class="prop_id">DCAM_IDPROP_BUFFER_TOPOFFSETBYTES</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">4.0</div>
                       </td>
                       <td width="5%" align="center">
                         <div class="prop_id">R</div>
@@ -3116,14 +3139,15 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return unnecessary data size in front of the actual image data</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
                         <div class="prop_id">DCAM_IDPROP_BUFFER_PIXELTYPE</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">4.0</div>
                       </td>
                       <td width="5%" align="center">
                         <div class="prop_id">R</div>
@@ -3152,7 +3176,7 @@
                         <div class="prop_id">DCAM_IDPROP_RECORDFIXEDBYTES_PERFILE</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">4.0</div>
                       </td>
                       <td width="5%" align="center">
                         <div class="prop_id">R</div>
@@ -3173,14 +3197,15 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return additional data size per a file</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
                         <div class="prop_id">DCAM_IDPROP_RECORDFIXEDBYTES_PERSESSION</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">4.0</div>
                       </td>
                       <td width="5%" align="center">
                         <div class="prop_id">R</div>
@@ -3201,14 +3226,15 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return additional data size per a session</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
                         <div class="prop_id">DCAM_IDPROP_RECORDFIXEDBYTES_PERFRAME</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">4.0</div>
                       </td>
                       <td width="5%" align="center">
                         <div class="prop_id">R</div>
@@ -3229,7 +3255,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return additional data size per a frame</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -3292,7 +3319,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return current conversion factor coefficient</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -3320,14 +3348,15 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return current conversion factor offset</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
                         <div class="prop_id">DCAM_IDPROP_IMAGEDETECTOR_PIXELWIDTH</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">4.0</div>
                       </td>
                       <td width="5%" align="center">
                         <div class="prop_id">R</div>
@@ -3349,15 +3378,16 @@
                     </tr>
                     <tr>
                       <td width="5%" class="prop_indent"></td>
-                      <td>return 16</td>
-                      <td colspan="6"></td>
+                      <td>return 16.0</td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
                         <div class="prop_id">DCAM_IDPROP_IMAGEDETECTOR_PIXELHEIGHT</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">4.0</div>
                       </td>
                       <td width="5%" align="center">
                         <div class="prop_id">R</div>
@@ -3379,15 +3409,16 @@
                     </tr>
                     <tr>
                       <td width="5%" class="prop_indent"></td>
-                      <td>return 16</td>
-                      <td colspan="6"></td>
+                      <td>return 16.0</td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
                         <div class="prop_id">DCAM_IDPROP_TIMESTAMP_PRODUCER</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">4.0</div>
                       </td>
                       <td width="5%" align="center">
                         <div class="prop_id">R</div>
@@ -3416,7 +3447,7 @@
                         <div class="prop_id">DCAM_IDPROP_FRAMESTAMP_PRODUCER</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">4.0</div>
                       </td>
                       <td width="5%" align="center">
                         <div class="prop_id">R</div>

@@ -96,7 +96,7 @@
   <body>
     <div>
       <div class="fileinformation">
-		<div>v19.2.5719</div>
+		<div>v21.6.6291</div>
 	</div>
     </div>
     <div><a class="go-top" href="#Chapter_appendix_detail"></a></div>
@@ -354,7 +354,7 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>DCAMPROP_SENSORMODE__PROGRESSIVE</td>
-                      <td colspan="6">@ Connect Camera Link</td>
+                      <td colspan="6">@ Camera Link connection</td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -384,18 +384,11 @@
                       <td>1 to 2
         , step 1
         , default 2</td>
-                      <td colspan="6">@ DCAMPROP_SENSORMODE__AREA</td>
-                    </tr>
-                    <tr>
-                      <td width="5%" class="prop_indent"></td>
-                      <td>2 to 2
-        , step 0
-        , default 2</td>
-                      <td colspan="6">@ DCAMPROP_SENSORMODE__PROGRESSIVE</td>
+                      <td colspan="6">When the sensor mode is PROGRESSIVE, it works as 2 regardless of the Property value.</td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
-                        <div class="prop_id">DCAM_IDPROP_READOUT_DIRECTION</div>
+                        <div class="prop_id">DCAM_IDPROP_READOUT_DIRECTION (at Camera Link connection only)</div>
                       </td>
                       <td width="5%" align="center">
                         <div class="prop_id">-</div>
@@ -622,7 +615,7 @@
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
-                        <div class="prop_id">DCAM_IDPROP_TRIGGER_CONNECTOR</div>
+                        <div class="prop_id">DCAM_IDPROP_TRIGGER_CONNECTOR (at Camera Link connection only)</div>
                       </td>
                       <td width="5%" align="center">
                         <div class="prop_id">-</div>
@@ -683,8 +676,14 @@
                       <td>1 to 10000
         , step 1
         , default 1</td>
-                      <td colspan="6">
-                      </td>
+                      <td colspan="6">@ Camera Link connection</td>
+                    </tr>
+                    <tr>
+                      <td width="5%" class="prop_indent"></td>
+                      <td>1 to 4095
+        , step 1
+        , default 1</td>
+                      <td colspan="6">@ USB 3.0 connection</td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -713,21 +712,21 @@
                     </tr>
                     <tr>
                       <td width="5%" class="prop_indent"></td>
-                      <td>0 to 10.000000
-        , step 0.000010
+                      <td>0 to 10.0
+        , step 0.00001
         , default 0</td>
                       <td colspan="6">@ DCAMPROP_SENSORMODE__AREA</td>
                     </tr>
                     <tr>
                       <td width="5%" class="prop_indent"></td>
-                      <td>0 to 0.019859
-        , step 0.000010
-        , default 0</td>
-                      <td colspan="6">@ DCAMPROP_SENSORMODE__PROGRESSIVE (Changed by Line Rate and Pre HSync Count)</td>
+                      <td>0 to 0.019859008
+        , step 0.000009744
+        , default 0.000087699</td>
+                      <td colspan="6">@ DCAMPROP_SENSORMODE__PROGRESSIVE<br>Depends on INTERNALLINESPEED and INTERNAL_LINEINTERVAL, OUTPUTTRIGGER_PREHSYNCCOUNT</td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
-                        <div class="prop_id">DCAM_IDPROP_SYNCREADOUT_SYSTEMBLANK</div>
+                        <div class="prop_id">DCAM_IDPROP_SYNCREADOUT_SYSTEMBLANK (at Camera Link connection only)</div>
                       </td>
                       <td width="5%" align="center">
                         <div class="prop_id">-</div>
@@ -763,6 +762,47 @@
                     <tr>
                       <td width="100%" colspan="8">
                         <div class="prop_groupname">Sensor cooler</div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td width="55%" colspan="2">
+                        <div class="prop_id">DCAM_IDPROP_SENSORCOOLER (at Water Cooling only)</div>
+                      </td>
+                      <td width="5%" align="center">
+                        <div class="prop_id">-</div>
+                      </td>
+                      <td width="5%" align="center">
+                        <div class="prop_id">R</div>
+                      </td>
+                      <td width="5%" align="center">
+                        <div class="prop_id">W</div>
+                      </td>
+                      <td width="5%" align="center">
+                        <div class="prop_id">W</div>
+                      </td>
+                      <td width="5%" align="center">
+                        <div class="prop_id">W</div>
+                      </td>
+                      <td width="20%">
+                        <div class="prop_id">MODE</div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td width="5%" class="prop_indent"></td>
+                      <td>DCAMPROP_SENSORCOOLER__OFF</td>
+                      <td colspan="6">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td width="5%" class="prop_indent"></td>
+                      <td>DCAMPROP_SENSORCOOLER__ON</td>
+                      <td colspan="6">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td width="5%" class="prop_indent"></td>
+                      <td>DCAMPROP_SENSORCOOLER__MAX</td>
+                      <td colspan="6">
                       </td>
                     </tr>
                     <tr>
@@ -807,6 +847,11 @@
                       </td>
                     </tr>
                     <tr>
+                      <td width="5%" class="prop_indent"></td>
+                      <td>DCAMPROP_SENSORCOOLERSTATUS__ALWAYS</td>
+                      <td colspan="6">@ USB 3.0 connection</td>
+                    </tr>
+                    <tr>
                       <td width="100%" colspan="8">
                         <div class="prop_groupname">Binning and ROI</div>
                       </td>
@@ -837,20 +882,17 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>DCAMPROP_BINNING__1 (default)</td>
-                      <td colspan="6">
-                      </td>
+                      <td colspan="6">ALL DCAM_IDPROP_SENSORMODE</td>
                     </tr>
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>DCAMPROP_BINNING__2</td>
-                      <td colspan="6">
-                      </td>
+                      <td colspan="6">@ DCAMPROP_SENSORMODE__AREA</td>
                     </tr>
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>DCAMPROP_BINNING__4</td>
-                      <td colspan="6">
-                      </td>
+                      <td colspan="6">@ DCAMPROP_SENSORMODE__AREA</td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -880,8 +922,14 @@
                       <td>0 to 2044
         , step 4
         , default 0</td>
-                      <td colspan="6">
-                      </td>
+                      <td colspan="6">@ DCAMPROP_SENSORMODE__AREA</td>
+                    </tr>
+                    <tr>
+                      <td width="5%" class="prop_indent"></td>
+                      <td>0 to 2047
+        , step 1
+        , default 0</td>
+                      <td colspan="6">@ DCAMPROP_SENSORMODE__PROGRESSIVE</td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -911,8 +959,14 @@
                       <td>4 to 2048
         , step 4
         , default 2048</td>
-                      <td colspan="6">
-                      </td>
+                      <td colspan="6">@ DCAMPROP_SENSORMODE__AREA</td>
+                    </tr>
+                    <tr>
+                      <td width="5%" class="prop_indent"></td>
+                      <td>1 to 2048
+        , step 1
+        , default 2048</td>
+                      <td colspan="6">@ DCAMPROP_SENSORMODE__PROGRESSIVE</td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -1018,6 +1072,41 @@
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
+                        <div class="prop_id">DCAM_IDPROP_EXPOSURETIME_CONTROL (at USB 3.0 connection only)</div>
+                      </td>
+                      <td width="5%" align="center">
+                        <div class="prop_id">-</div>
+                      </td>
+                      <td width="5%" align="center">
+                        <div class="prop_id">R</div>
+                      </td>
+                      <td width="5%" align="center">
+                        <div class="prop_id">W</div>
+                      </td>
+                      <td width="5%" align="center">
+                        <div class="prop_id">W</div>
+                      </td>
+                      <td width="5%" align="center">
+                        <div class="prop_id">W</div>
+                      </td>
+                      <td width="20%">
+                        <div class="prop_id">MODE</div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td width="5%" class="prop_indent"></td>
+                      <td>DCAMPROP_EXPOSURETIME_CONTROL__OFF</td>
+                      <td colspan="6">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td width="5%" class="prop_indent"></td>
+                      <td>DCAMPROP_EXPOSURETIME_CONTROL__NORMAL (default)</td>
+                      <td colspan="6">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td width="55%" colspan="2">
                         <div class="prop_id">DCAM_IDPROP_EXPOSURETIME</div>
                       </td>
                       <td width="5%" align="center">
@@ -1043,17 +1132,38 @@
                     </tr>
                     <tr>
                       <td width="5%" class="prop_indent"></td>
-                      <td>0.001004 to 10.000000
-        , step 0.000001
-        , default 0.009997</td>
-                      <td colspan="6">@ DCAMPROP_SENSORMODE__AREA (Changed by Subarray)</td>
+                      <td>0.003020752 to 10.0
+        , step 0.00000001
+        , default 0.00999771</td>
+                      <td colspan="6">@ Camera Link connection and DCAMPROP_SENSORMODE__AREA, DCAM_IDPROP_READOUTSPEED=1<br>Depends on SUBARRAY properties</td>
                     </tr>
                     <tr>
                       <td width="5%" class="prop_indent"></td>
-                      <td>0.000010 to 0.019956
-        , step 0.000001
-        , default 0.009997</td>
-                      <td colspan="6">@ DCAMPROP_SENSORMODE__PROGRESSIVE (Changed by Subarray and Line Rate)</td>
+                      <td>0.001003669 to 10.0
+        , step 0.00000001
+        , default 0.00999771</td>
+                      <td colspan="6">@ Camera Link connection and DCAMPROP_SENSORMODE__AREA, DCAM_IDPROP_READOUTSPEED=2<br>Depends on SUBARRAY properties</td>
+                    </tr>
+                    <tr>
+                      <td width="5%" class="prop_indent"></td>
+                      <td>0.000009744 to 0.019956451
+        , step 0.00000001
+        , default 0.00999771</td>
+                      <td colspan="6">@ Camera Link connection and DCAMPROP_SENSORMODE__PROGRESSIVE<br>Depends on INTERNALLINESPEED and INTERNAL_LINEINTERVAL, SUBARRAY properties</td>
+                    </tr>
+                    <tr>
+                      <td width="5%" class="prop_indent"></td>
+                      <td>0.003020752 to 10.0
+        , step 0.00000001
+        , default 0.033325714</td>
+                      <td colspan="6">@ USB 3.0 connection and DCAMPROP_SENSORMODE__AREA, DCAM_IDPROP_READOUTSPEED=1<br>Depends on SUBARRAY properties</td>
+                    </tr>
+                    <tr>
+                      <td width="5%" class="prop_indent"></td>
+                      <td>0.001003660 to 10.0
+        , step 0.00000001
+        , default 0.033325714</td>
+                      <td colspan="6">@ USB 3.0 connection and DCAMPROP_SENSORMODE__AREA, DCAM_IDPROP_READOUTSPEED=2<br>Depends on SUBARRAY properties</td>
                     </tr>
                     <tr>
                       <td width="100%" colspan="8">
@@ -1126,7 +1236,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return 3</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -1154,14 +1265,12 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>DCAMPROP_OUTPUTTRIGGER_SOURCE__READOUTEND (default)</td>
-                      <td colspan="6">
-                      </td>
+                      <td colspan="6">ALL DCAM_IDPROP_SENSORMODE</td>
                     </tr>
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>DCAMPROP_OUTPUTTRIGGER_SOURCE__VSYNC</td>
-                      <td colspan="6">
-                      </td>
+                      <td colspan="6">ALL DCAM_IDPROP_SENSORMODE</td>
                     </tr>
                     <tr>
                       <td width="5%" class="prop_indent"></td>
@@ -1259,7 +1368,7 @@
                     </tr>
                     <tr>
                       <td width="5%" class="prop_indent"></td>
-                      <td>0 to 10.000000
+                      <td>0 to 10.0
         , step 0.000001
         , default 0</td>
                       <td colspan="6">
@@ -1292,9 +1401,9 @@
                     </tr>
                     <tr>
                       <td width="5%" class="prop_indent"></td>
-                      <td>0.000001 to 10.000000
+                      <td>0.000001 to 10.0
         , step 0.000001
-        , default 0.001000</td>
+        , default 0.001</td>
                       <td colspan="6">
                       </td>
                     </tr>
@@ -1353,7 +1462,7 @@
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
-                        <div class="prop_id">DCAM_IDPROP_OUTPUTTRIGGER_PREHSYNCCOUNT</div>
+                        <div class="prop_id">DCAM_IDPROP_OUTPUTTRIGGER_PREHSYNCCOUNT (at Camera Link connection only)</div>
                       </td>
                       <td width="5%" align="center">
                         <div class="prop_id">-</div>
@@ -1415,7 +1524,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return seconds how long takes to reading out a frame.</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -1445,7 +1555,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return seconds which period cyclic trigger happens in.</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -1475,7 +1586,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return seconds required minimum trigger blanking.</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -1505,7 +1617,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return seconds required minimum trigger interval.</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -1535,7 +1648,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return seconds how long takes to start global exposure.</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -1594,7 +1708,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return seconds of period which exposure is not started from trigger.</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -1607,13 +1722,13 @@
                         <div class="prop_id">R</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">W</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">W</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">W</div>
                       </td>
                       <td width="20%">
                         <div class="prop_id">REAL
@@ -1624,7 +1739,12 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return number of frames per second in INTERNAL trigger mode.</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">@ USB 3.0 connection or DCAMPROP_SENSORMODE__AREA<br>Read Only when sensor mode is AREA or USB 3.0 connection.</td>
+                    </tr>
+                    <tr>
+                      <td width="5%" class="prop_indent"></td>
+                      <td>20.035817413 to 33.276088453, step 0</td>
+                      <td colspan="6">@ Camera Link connection and DCAMPROP_SENSORMODE__PROGRESSIVE<br>Depends on INTERNALLINESPEED and INTERNAL_LINEINTERVAL</td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -1637,13 +1757,13 @@
                         <div class="prop_id">R</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">W</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">W</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">W</div>
                       </td>
                       <td width="20%">
                         <div class="prop_id">REAL
@@ -1654,11 +1774,16 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return seconds of interval between frames in INTERNAL trigger mode.</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">@ USB 3.0 connection or DCAMPROP_SENSORMODE__AREA<br>Read Only when sensor mode is AREA or USB 3.0 connection.</td>
+                    </tr>
+                    <tr>
+                      <td width="5%" class="prop_indent"></td>
+                      <td>0.030051609 to 0.049910617, step 0</td>
+                      <td colspan="6">@ Camera Link connection and DCAMPROP_SENSORMODE__PROGRESSIVE<br>Depends on INTERNALLINESPEED and INTERNAL_LINEINTERVAL</td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
-                        <div class="prop_id">DCAM_IDPROP_INTERNALLINESPEED</div>
+                        <div class="prop_id">DCAM_IDPROP_INTERNALLINESPEED (at Camera Link connection only)</div>
                       </td>
                       <td width="5%" align="center">
                         <div class="prop_id">-</div>
@@ -1667,13 +1792,13 @@
                         <div class="prop_id">R</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">W</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">W</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">W</div>
                       </td>
                       <td width="20%">
                         <div class="prop_id">REAL
@@ -1684,11 +1809,16 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return speed on the sensor.</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">@ DCAMPROP_SENSORMODE__AREA<br>Read Only when sensor mode is AREA.</td>
+                    </tr>
+                    <tr>
+                      <td width="5%" class="prop_indent"></td>
+                      <td>0.006500000 to 0.667052469, step 0.000000024</td>
+                      <td colspan="6">@ DCAMPROP_SENSORMODE__PROGRESSIVE</td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
-                        <div class="prop_id">DCAM_IDPROP_INTERNAL_LINEINTERVAL</div>
+                        <div class="prop_id">DCAM_IDPROP_INTERNAL_LINEINTERVAL (at Camera Link connection only)</div>
                       </td>
                       <td width="5%" align="center">
                         <div class="prop_id">-</div>
@@ -1697,13 +1827,13 @@
                         <div class="prop_id">R</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">W</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">W</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">W</div>
                       </td>
                       <td width="20%">
                         <div class="prop_id">REAL
@@ -1714,7 +1844,12 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return seconds of interval between two lines timings.</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">@ DCAMPROP_SENSORMODE__AREA<br>Read Only when sensor mode is AREA.</td>
+                    </tr>
+                    <tr>
+                      <td width="5%" class="prop_indent"></td>
+                      <td>0.000009744 to 0.001, step 0.000000004</td>
+                      <td colspan="6">@ DCAMPROP_SENSORMODE__PROGRESSIVE</td>
                     </tr>
                     <tr>
                       <td width="100%" colspan="8">
@@ -1776,7 +1911,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return 16</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -1804,7 +1940,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return width pixel of current setting</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -1832,7 +1969,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return height line of current setting</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -1860,7 +1998,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return horizontal rowbytes of current setting</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -1888,7 +2027,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return bytes per frame of current setting</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -1916,7 +2056,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return offset bytes size to point first data in image</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -1949,10 +2090,41 @@
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
-                        <div class="prop_id">DCAM_IDPROP_BUFFER_ROWBYTES</div>
+                        <div class="prop_id">DCAM_IDPROP_IMAGE_CAMERASTAMP (at USB 3.0 connection only)</div>
+                      </td>
+                      <td width="5%" align="center">
+                        <div class="prop_id">4.0</div>
+                      </td>
+                      <td width="5%" align="center">
+                        <div class="prop_id">R</div>
+                      </td>
+                      <td width="5%" align="center">
+                        <div class="prop_id">W</div>
                       </td>
                       <td width="5%" align="center">
                         <div class="prop_id">-</div>
+                      </td>
+                      <td width="5%" align="center">
+                        <div class="prop_id">-</div>
+                      </td>
+                      <td width="20%">
+                        <div class="prop_id">LONG</div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td width="5%" class="prop_indent"></td>
+                      <td>0 to 65535
+        , step 1
+        , default 0</td>
+                      <td colspan="6">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td width="55%" colspan="2">
+                        <div class="prop_id">DCAM_IDPROP_BUFFER_ROWBYTES</div>
+                      </td>
+                      <td width="5%" align="center">
+                        <div class="prop_id">4.0</div>
                       </td>
                       <td width="5%" align="center">
                         <div class="prop_id">R</div>
@@ -1973,14 +2145,15 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return row byte size of user attached buffer</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
                         <div class="prop_id">DCAM_IDPROP_BUFFER_FRAMEBYTES</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">4.0</div>
                       </td>
                       <td width="5%" align="center">
                         <div class="prop_id">R</div>
@@ -2001,14 +2174,15 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return byte size of a frame buffer that should be allocated when you use dcambuf_attach() function</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
                         <div class="prop_id">DCAM_IDPROP_BUFFER_TOPOFFSETBYTES</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">4.0</div>
                       </td>
                       <td width="5%" align="center">
                         <div class="prop_id">R</div>
@@ -2029,14 +2203,15 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return unnecessary data size in front of the actual image data</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
                         <div class="prop_id">DCAM_IDPROP_BUFFER_PIXELTYPE</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">4.0</div>
                       </td>
                       <td width="5%" align="center">
                         <div class="prop_id">R</div>
@@ -2065,7 +2240,7 @@
                         <div class="prop_id">DCAM_IDPROP_RECORDFIXEDBYTES_PERFILE</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">4.0</div>
                       </td>
                       <td width="5%" align="center">
                         <div class="prop_id">R</div>
@@ -2086,14 +2261,15 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return additional data size per a file</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
                         <div class="prop_id">DCAM_IDPROP_RECORDFIXEDBYTES_PERSESSION</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">4.0</div>
                       </td>
                       <td width="5%" align="center">
                         <div class="prop_id">R</div>
@@ -2114,11 +2290,105 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return additional data size per a session</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
                         <div class="prop_id">DCAM_IDPROP_RECORDFIXEDBYTES_PERFRAME</div>
+                      </td>
+                      <td width="5%" align="center">
+                        <div class="prop_id">4.0</div>
+                      </td>
+                      <td width="5%" align="center">
+                        <div class="prop_id">R</div>
+                      </td>
+                      <td width="5%" align="center">
+                        <div class="prop_id">-</div>
+                      </td>
+                      <td width="5%" align="center">
+                        <div class="prop_id">-</div>
+                      </td>
+                      <td width="5%" align="center">
+                        <div class="prop_id">-</div>
+                      </td>
+                      <td width="20%">
+                        <div class="prop_id">LONG</div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td width="5%" class="prop_indent"></td>
+                      <td>return additional data size per a frame</td>
+                      <td colspan="6">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td width="55%" colspan="2">
+                        <div class="prop_id">DCAM_IDPROP_FRAMEBUNDLE_MODE (at USB 3.0 connection only)</div>
+                      </td>
+                      <td width="5%" align="center">
+                        <div class="prop_id">-</div>
+                      </td>
+                      <td width="5%" align="center">
+                        <div class="prop_id">R</div>
+                      </td>
+                      <td width="5%" align="center">
+                        <div class="prop_id">W</div>
+                      </td>
+                      <td width="5%" align="center">
+                        <div class="prop_id">-</div>
+                      </td>
+                      <td width="5%" align="center">
+                        <div class="prop_id">-</div>
+                      </td>
+                      <td width="20%">
+                        <div class="prop_id">MODE</div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td width="5%" class="prop_indent"></td>
+                      <td>DCAMPROP_MODE__OFF (default)</td>
+                      <td colspan="6">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td width="5%" class="prop_indent"></td>
+                      <td>DCAMPROP_MODE__ON</td>
+                      <td colspan="6">Depends on SUBARRAY properties</td>
+                    </tr>
+                    <tr>
+                      <td width="55%" colspan="2">
+                        <div class="prop_id">DCAM_IDPROP_FRAMEBUNDLE_NUMBER (at USB 3.0 connection only)</div>
+                      </td>
+                      <td width="5%" align="center">
+                        <div class="prop_id">-</div>
+                      </td>
+                      <td width="5%" align="center">
+                        <div class="prop_id">R</div>
+                      </td>
+                      <td width="5%" align="center">
+                        <div class="prop_id">W</div>
+                      </td>
+                      <td width="5%" align="center">
+                        <div class="prop_id">-</div>
+                      </td>
+                      <td width="5%" align="center">
+                        <div class="prop_id">-</div>
+                      </td>
+                      <td width="20%">
+                        <div class="prop_id">LONG</div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td width="5%" class="prop_indent"></td>
+                      <td>2 to 512
+        , step 1
+        , default 2</td>
+                      <td colspan="6">Depends on SUBARRAY properties</td>
+                    </tr>
+                    <tr>
+                      <td width="55%" colspan="2">
+                        <div class="prop_id">DCAM_IDPROP_FRAMEBUNDLE_ROWBYTES (at USB 3.0 connection only)</div>
                       </td>
                       <td width="5%" align="center">
                         <div class="prop_id">-</div>
@@ -2141,8 +2411,38 @@
                     </tr>
                     <tr>
                       <td width="5%" class="prop_indent"></td>
-                      <td>return additional data size per a frame</td>
-                      <td colspan="6"></td>
+                      <td>return horizontal rowbytes of current setting</td>
+                      <td colspan="6">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td width="55%" colspan="2">
+                        <div class="prop_id">DCAM_IDPROP_FRAMEBUNDLE_FRAMESTEPBYTES (at USB 3.0 connection only)</div>
+                      </td>
+                      <td width="5%" align="center">
+                        <div class="prop_id">-</div>
+                      </td>
+                      <td width="5%" align="center">
+                        <div class="prop_id">R</div>
+                      </td>
+                      <td width="5%" align="center">
+                        <div class="prop_id">-</div>
+                      </td>
+                      <td width="5%" align="center">
+                        <div class="prop_id">-</div>
+                      </td>
+                      <td width="5%" align="center">
+                        <div class="prop_id">-</div>
+                      </td>
+                      <td width="20%">
+                        <div class="prop_id">LONG</div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td width="5%" class="prop_indent"></td>
+                      <td>return bytes of gap between two frames in a same frame bundle</td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -2205,7 +2505,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return current conversion factor coefficient</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -2233,14 +2534,15 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return current conversion factor offset</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
                         <div class="prop_id">DCAM_IDPROP_IMAGEDETECTOR_PIXELWIDTH</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">4.0</div>
                       </td>
                       <td width="5%" align="center">
                         <div class="prop_id">R</div>
@@ -2262,15 +2564,16 @@
                     </tr>
                     <tr>
                       <td width="5%" class="prop_indent"></td>
-                      <td>return 6.500000</td>
-                      <td colspan="6"></td>
+                      <td>return 6.5</td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
                         <div class="prop_id">DCAM_IDPROP_IMAGEDETECTOR_PIXELHEIGHT</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">4.0</div>
                       </td>
                       <td width="5%" align="center">
                         <div class="prop_id">R</div>
@@ -2292,15 +2595,16 @@
                     </tr>
                     <tr>
                       <td width="5%" class="prop_indent"></td>
-                      <td>return 6.500000</td>
-                      <td colspan="6"></td>
+                      <td>return 6.5</td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
-                        <div class="prop_id">DCAM_IDPROP_IMAGEDETECTOR_PIXELNUMHORZ</div>
+                        <div class="prop_id">DCAM_IDPROP_IMAGEDETECTOR_PIXELNUMHORZ (at Camera Link connection only)</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">4.0</div>
                       </td>
                       <td width="5%" align="center">
                         <div class="prop_id">R</div>
@@ -2321,14 +2625,15 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return 2048</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
-                        <div class="prop_id">DCAM_IDPROP_IMAGEDETECTOR_PIXELNUMVERT</div>
+                        <div class="prop_id">DCAM_IDPROP_IMAGEDETECTOR_PIXELNUMVERT (at Camera Link connection only)</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">4.0</div>
                       </td>
                       <td width="5%" align="center">
                         <div class="prop_id">R</div>
@@ -2349,14 +2654,15 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return 2048</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
                         <div class="prop_id">DCAM_IDPROP_TIMESTAMP_PRODUCER</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">4.0</div>
                       </td>
                       <td width="5%" align="center">
                         <div class="prop_id">R</div>
@@ -2377,15 +2683,19 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>DCAMPROP_TIMESTAMP_PRODUCER__DCAMMODULE</td>
-                      <td colspan="6">
-                      </td>
+                      <td colspan="6">@ Camera Link connection</td>
+                    </tr>
+                    <tr>
+                      <td width="5%" class="prop_indent"></td>
+                      <td>DCAMPROP_TIMESTAMP_PRODUCER__IMAGINGDEVICE</td>
+                      <td colspan="6">@ USB 3.0 connection</td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
                         <div class="prop_id">DCAM_IDPROP_FRAMESTAMP_PRODUCER</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">4.0</div>
                       </td>
                       <td width="5%" align="center">
                         <div class="prop_id">R</div>
@@ -2406,8 +2716,12 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>DCAMPROP_FRAMESTAMP_PRODUCER__DCAMMODULE</td>
-                      <td colspan="6">
-                      </td>
+                      <td colspan="6">@ Camera Link connection</td>
+                    </tr>
+                    <tr>
+                      <td width="5%" class="prop_indent"></td>
+                      <td>DCAMPROP_FRAMESTAMP_PRODUCER__IMAGINGDEVICE</td>
+                      <td colspan="6">@ USB 3.0 connection</td>
                     </tr>
                   </table>
 

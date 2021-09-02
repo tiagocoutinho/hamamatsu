@@ -374,11 +374,13 @@ class ESensorMode(enum.IntEnum):
     PROGRESSIVE = 12
     SPLITVIEW = 14
     DUALLIGHTSHEET = 16
+    PHOTONNUMBERRESOLVING = 18
 
 
 class ESystemAlive(enum.IntEnum):
     OFFLINE = 1
     ONLINE = 2
+    ERROR = 3
 
 
 class EColorType(enum.IntEnum):
@@ -557,6 +559,7 @@ class EOutputTriggerKind(enum.IntEnum):
     PROGRAMABLE = 3
     TRIGGERREADY = 4
     HIGH = 5
+    ANYROWEXPOSURE = 6
 
 
 class EBinning(enum.IntEnum):
@@ -565,6 +568,8 @@ class EBinning(enum.IntEnum):
     FOURxFOUR = 4
     EIGHTxEIGHT = 8
     SIXTEENxSIXTEEN = 16
+    ONExTWO = 102
+    TWOxFOUR = 204
 
 
 class ESubArrayMode(enum.IntEnum):

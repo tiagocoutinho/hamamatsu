@@ -96,7 +96,7 @@
   <body>
     <div>
       <div class="fileinformation">
-		<div>v19.2.5719</div>
+		<div>v21.6.6291</div>
 	</div>
     </div>
     <div><a class="go-top" href="#Chapter_appendix_detail"></a></div>
@@ -806,8 +806,9 @@
                     </tr>
                     <tr>
                       <td width="5%" class="prop_indent"></td>
-                      <td>-128.000000 to 127.000000</td>
-                      <td colspan="6"></td>
+                      <td>-128.0 to 127.0</td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="100%" colspan="8">
@@ -874,11 +875,10 @@
                     </tr>
                     <tr>
                       <td width="5%" class="prop_indent"></td>
-                      <td>0 to 636
+                      <td>0 to n-4
         , step 1
         , default 0</td>
-                      <td colspan="6">
-                      </td>
+                      <td colspan="6">n is the value of DCAM_IDPROP_IMAGE_WIDTH</td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -905,11 +905,10 @@
                     </tr>
                     <tr>
                       <td width="5%" class="prop_indent"></td>
-                      <td>4 to 640
+                      <td>4 to n
         , step 4
-        , default 640</td>
-                      <td colspan="6">
-                      </td>
+        , default n</td>
+                      <td colspan="6">n is the value of DCAM_IDPROP_IMAGE_WIDTH</td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -937,7 +936,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return 0</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -965,7 +965,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return 512</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -1094,9 +1095,9 @@
                     </tr>
                     <tr>
                       <td width="5%" class="prop_indent"></td>
-                      <td>0.000120000 to 0.006000000
-        , step 0.000000010
-        , default 0.000120000</td>
+                      <td>0.00012 to 0.006
+        , step 0.00000001
+        , default 0.00012</td>
                       <td colspan="6">
                       </td>
                     </tr>
@@ -1819,9 +1820,9 @@
                     </tr>
                     <tr>
                       <td width="5%" class="prop_indent"></td>
-                      <td>0.010000000 to 5.000000000
-        , step 0.010000000
-        , default 1.000000000</td>
+                      <td>0.01 to 5.0
+        , step 0.01
+        , default 1.0</td>
                       <td colspan="6">
                       </td>
                     </tr>
@@ -2035,7 +2036,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return number of frames per second in INTERNAL trigger mode.</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -2065,7 +2067,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return seconds of interval between frames in INTERNAL trigger mode.</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -2094,9 +2097,9 @@
                     </tr>
                     <tr>
                       <td width="5%" class="prop_indent"></td>
-                      <td>166.666000000 to 8333.333000000
-        , step 0.001000000
-        , default 8333.333000000</td>
+                      <td>166.666 to 8333.333
+        , step 0.001
+        , default 8333.333</td>
                       <td colspan="6">
                       </td>
                     </tr>
@@ -2127,9 +2130,9 @@
                     </tr>
                     <tr>
                       <td width="5%" class="prop_indent"></td>
-                      <td>0.066660000 to 3.333330000
-        , step 0.000010000
-        , default 3.333330000</td>
+                      <td>0.06666 to 3.33333
+        , step 0.00001
+        , default 3.33333</td>
                       <td colspan="6">
                       </td>
                     </tr>
@@ -2193,7 +2196,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return 14</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -2221,7 +2225,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return width pixel of current setting</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -2249,7 +2254,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return height line of current setting</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -2277,7 +2283,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return horizontal rowbytes of current setting</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -2305,7 +2312,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return bytes per frame of current setting</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -2333,7 +2341,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return offset bytes size to point first data in image</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -2421,7 +2430,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return row byte size of user attached buffer</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -2449,7 +2459,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return byte size of a frame buffer that should be allocated when you use dcambuf_attach() function</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -2477,7 +2488,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return unnecessary data size in front of the actual image data</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -2570,8 +2582,9 @@
                     </tr>
                     <tr>
                       <td width="5%" class="prop_indent"></td>
-                      <td>return 400.000000</td>
-                      <td colspan="6"></td>
+                      <td>return 400.0</td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -2600,8 +2613,9 @@
                     </tr>
                     <tr>
                       <td width="5%" class="prop_indent"></td>
-                      <td>return 600.000000</td>
-                      <td colspan="6"></td>
+                      <td>return 600.0</td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">

@@ -96,13 +96,13 @@
   <body>
     <div>
       <div class="fileinformation">
-		<div>v19.2.5719</div>
+		<div>v21.6.6291</div>
 	</div>
     </div>
     <div><a class="go-top" href="#Chapter_appendix_detail"></a></div>
     <hr>
     <div id="Chapter_readfirst_detail">
-      <div class="chapter">最初にお読みください</div>
+      <div class="chapter">最初にお読みください</div>
       <p></p>
       <table width="100%">
         <tr>
@@ -397,14 +397,7 @@
                       <td>1 to 2
         , step 1
         , default 2</td>
-                      <td colspan="6">@ DCAMPROP_SENSORMODE__AREA, SPLITVIEW</td>
-                    </tr>
-                    <tr>
-                      <td width="5%" class="prop_indent"></td>
-                      <td>2 to 2
-        , step 0
-        , default 2</td>
-                      <td colspan="6">@ DCAMPROP_SENSORMODE__PROGRESSIVE, DUALLIGHTSHEET</td>
+                      <td colspan="6">センサモードが PROGRESSIVE または DUALLIGHTSHEET の時は、値によらず 2 と同等です。</td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -417,7 +410,7 @@
                         <div class="prop_id">R</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">W</div>
                       </td>
                       <td width="5%" align="center">
                         <div class="prop_id">-</div>
@@ -732,17 +725,17 @@
                     </tr>
                     <tr>
                       <td width="5%" class="prop_indent"></td>
-                      <td>0 to 10
+                      <td>0 to 10.0
         , step 0.000001
         , default 0</td>
                       <td colspan="6">@ DCAMPROP_SENSORMODE__AREA, SPLITVIEW</td>
                     </tr>
                     <tr>
                       <td width="5%" class="prop_indent"></td>
-                      <td>0 to 0.019859
-        , step 0.000010
-        , default 0</td>
-                      <td colspan="6">@ DCAMPROP_SENSORMODE__PROGRESSIVE, DUALLIGHTSHEET (Changed by Line Rate and Pre Hsync Count)</td>
+                      <td>0 to 0.019859008
+        , step 0.000009744
+        , default 0.000087699</td>
+                      <td colspan="6">@ DCAMPROP_SENSORMODE__PROGRESSIVE, DUALLIGHTSHEET<br>Line Speed や Line Interval、Pre Hsync Count の設定により、設定値や設定範囲が変化します。</td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -755,10 +748,10 @@
                         <div class="prop_id">R</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">W</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">W</div>
                       </td>
                       <td width="5%" align="center">
                         <div class="prop_id">-</div>
@@ -810,7 +803,49 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>-50 to 100</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td width="55%" colspan="2">
+                        <div class="prop_id">DCAM_IDPROP_SENSORCOOLER (水冷モードの場合のみ表示されます)</div>
+                      </td>
+                      <td width="5%" align="center">
+                        <div class="prop_id">-</div>
+                      </td>
+                      <td width="5%" align="center">
+                        <div class="prop_id">R</div>
+                      </td>
+                      <td width="5%" align="center">
+                        <div class="prop_id">W</div>
+                      </td>
+                      <td width="5%" align="center">
+                        <div class="prop_id">W</div>
+                      </td>
+                      <td width="5%" align="center">
+                        <div class="prop_id">W</div>
+                      </td>
+                      <td width="20%">
+                        <div class="prop_id">MODE</div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td width="5%" class="prop_indent"></td>
+                      <td>DCAMPROP_SENSORCOOLER__OFF</td>
+                      <td colspan="6">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td width="5%" class="prop_indent"></td>
+                      <td>DCAMPROP_SENSORCOOLER__ON</td>
+                      <td colspan="6">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td width="5%" class="prop_indent"></td>
+                      <td>DCAMPROP_SENSORCOOLER__MAX</td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -924,8 +959,21 @@
                       <td>0 to 2044
         , step 4
         , default 0</td>
-                      <td colspan="6">
-                      </td>
+                      <td colspan="6">@ DCAMPROP_SENSORMODE__AREA</td>
+                    </tr>
+                    <tr>
+                      <td width="5%" class="prop_indent"></td>
+                      <td>0 to 2047
+        , step 1
+        , default 0</td>
+                      <td colspan="6">@ DCAMPROP_SENSORMODE__PROGRESSIVE</td>
+                    </tr>
+                    <tr>
+                      <td width="5%" class="prop_indent"></td>
+                      <td>0 to 1920
+        , step 4
+        , default 0</td>
+                      <td colspan="6">@ DCAMPROP_SENSORMODE__SPLITVIEW, DUALLIGHTSHEET</td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -955,8 +1003,21 @@
                       <td>4 to 2048
         , step 4
         , default 2048</td>
-                      <td colspan="6">
-                      </td>
+                      <td colspan="6">@ DCAMPROP_SENSORMODE__AREA</td>
+                    </tr>
+                    <tr>
+                      <td width="5%" class="prop_indent"></td>
+                      <td>1 to 2048
+        , step 1
+        , default 2048</td>
+                      <td colspan="6">@ DCAMPROP_SENSORMODE__PROGRESSIVE</td>
+                    </tr>
+                    <tr>
+                      <td width="5%" class="prop_indent"></td>
+                      <td>128 to 2048
+        , step 128
+        , default 2048</td>
+                      <td colspan="6">@ DCAMPROP_SENSORMODE__SPLITVIEW, DUALLIGHTSHEET</td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -1069,7 +1130,7 @@
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
-                        <div class="prop_id">DCAM_IDPROP_FRAMEBUNDLE_MODE</div>
+                        <div class="prop_id">DCAM_IDPROP_FRAMEBUNDLE_MODE (USB 3.0接続の場合のみ表示されます)</div>
                       </td>
                       <td width="5%" align="center">
                         <div class="prop_id">-</div>
@@ -1093,16 +1154,17 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>DCAMPROP_MODE__OFF (default)</td>
-                      <td colspan="6">USB 3.0</td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>DCAMPROP_MODE__ON</td>
-                      <td colspan="6">USB 3.0</td>
+                      <td colspan="6">SUBARRAY プロパティの設定により、設定値が変化します。</td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
-                        <div class="prop_id">DCAM_IDPROP_FRAMEBUNDLE_NUMBER</div>
+                        <div class="prop_id">DCAM_IDPROP_FRAMEBUNDLE_NUMBER (USB 3.0接続の場合のみ表示されます)</div>
                       </td>
                       <td width="5%" align="center">
                         <div class="prop_id">-</div>
@@ -1128,7 +1190,7 @@
                       <td>2 to 1024
         , step 1
         , default 2</td>
-                      <td colspan="6">USB 3.0</td>
+                      <td colspan="6">SUBARRAY プロパティの設定により、設定値や設定範囲が変化します。</td>
                     </tr>
                     <tr>
                       <td width="100%" colspan="8">
@@ -1162,31 +1224,45 @@
                     </tr>
                     <tr>
                       <td width="5%" class="prop_indent"></td>
-                      <td>0.001004 to 10.000000
-        , step 0.000000
-        , default 0.009997</td>
-                      <td colspan="6">@ DCAMPROP_SENSORMODE__AREA(Changed by Subarray)</td>
+                      <td>0.003020752 to 10.0
+        , step 0.00000001
+        , default 0.00999771</td>
+                      <td colspan="6">@ DCAMPROP_SENSORMODE__AREA and DCAM_IDPROP_READOUTSPEED=1<br>SUBARRAY プロパティの設定により、設定値や設定範囲が変化します。</td>
                     </tr>
                     <tr>
                       <td width="5%" class="prop_indent"></td>
-                      <td>0.000010 to 0.019956
-        , step 0.000001
-        , default 0.009997</td>
-                      <td colspan="6">@ DCAMPROP_SENSORMODE__PROGRESSIVE(Changed by Subarray and Line Rate)</td>
+                      <td>0.001003669 to 10.0
+        , step 0.00000001
+        , default 0.00999771</td>
+                      <td colspan="6">@ DCAMPROP_SENSORMODE__AREA and DCAM_IDPROP_READOUTSPEED=2<br>SUBARRAY プロパティの設定により、設定値や設定範囲が変化します。</td>
                     </tr>
                     <tr>
                       <td width="5%" class="prop_indent"></td>
-                      <td>0.001004 to 2.000000
-        , step 0.000001
-        , default 0.009997</td>
-                      <td colspan="6">@ DCAMPROP_SENSORMODE__SPLITVIEW(Changed by Subarray and Trigger Handling)</td>
+                      <td>0.000009744 to 0.019956451
+        , step 0.00000001
+        , default 0.00999771</td>
+                      <td colspan="6">@ DCAMPROP_SENSORMODE__PROGRESSIVE<br>INTERNALLINESPEED や INTERNAL_LINEINTERVAL、SUBARRAY プロパティの設定により、設定値や設定範囲が変化します。</td>
                     </tr>
                     <tr>
                       <td width="5%" class="prop_indent"></td>
-                      <td>0.000010 to 0.009978
-        , step 0.000001
-        , default 0.009997</td>
-                      <td colspan="6">@ DCAMPROP_SENSORMODE__DUALLIGHTSHEET(Changed by Subarray and Line Rate)</td>
+                      <td>0.003020752 to 6.000025263
+        , step 0.00000001
+        , default 0.00999771</td>
+                      <td colspan="6">@ DCAMPROP_SENSORMODE__SPLITVIEW and DCAM_IDPROP_READOUTSPEED=1<br>INTERNALTRIGGER_HANDLING や SUBARRAY プロパティの設定により、設定値や設定範囲が変化します。</td>
+                    </tr>
+                    <tr>
+                      <td width="5%" class="prop_indent"></td>
+                      <td>0.001003669 to 2.000000842
+        , step 0.00000001
+        , default 0.00999771</td>
+                      <td colspan="6">@ DCAMPROP_SENSORMODE__SPLITVIEW and DCAM_IDPROP_READOUTSPEED=2<br>INTERNALTRIGGER_HANDLING や SUBARRAY プロパティの設定により、設定値や設定範囲が変化します。</td>
+                    </tr>
+                    <tr>
+                      <td width="5%" class="prop_indent"></td>
+                      <td>0.000009744 to 0.009978226
+        , step 0.00000001
+        , default 0.00999771</td>
+                      <td colspan="6">@ DCAMPROP_SENSORMODE__DUALLIGHTSHEET<br>INTERNALLINESPEED や INTERNAL_LINEINTERVAL、SUBARRAY プロパティの設定により、設定値や設定範囲が変化します。</td>
                     </tr>
                     <tr>
                       <td width="100%" colspan="8">
@@ -1338,7 +1414,7 @@
                         <div class="prop_id">DCAM_IDPROP_EXTRACTION_MODE</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">4.0</div>
                       </td>
                       <td width="5%" align="center">
                         <div class="prop_id">R</div>
@@ -1393,7 +1469,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return 3</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -1532,7 +1609,7 @@
                     </tr>
                     <tr>
                       <td width="5%" class="prop_indent"></td>
-                      <td>0 to 10
+                      <td>0 to 10.0
         , step 0.000001
         , default 0</td>
                       <td colspan="6">
@@ -1565,7 +1642,7 @@
                     </tr>
                     <tr>
                       <td width="5%" class="prop_indent"></td>
-                      <td>0.000001 to 10
+                      <td>0.000001 to 10.0
         , step 0.000001
         , default 0.000001</td>
                       <td colspan="6">
@@ -1810,9 +1887,9 @@
                     </tr>
                     <tr>
                       <td width="5%" class="prop_indent"></td>
-                      <td>0.000010 to 10.000000
+                      <td>0.00001 to 10.0
         , step 0.000001
-        , default 0.100000</td>
+        , default 0.1</td>
                       <td colspan="6">
                       </td>
                     </tr>
@@ -1880,7 +1957,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>フレームの読み出し時間を返します。</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -1910,7 +1988,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>サイクリックトリガの間隔を返します。</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -1940,7 +2019,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>露光の終了からトリガレディまでの時間を返します。</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -1970,7 +2050,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>トリガ入力を受け付けてから、次のトリガを受け付けられるまでの時間を返します。</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -2000,7 +2081,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>グローバル露光が開始されるまでの時間を返します。</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -2059,7 +2141,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>トリガ入力から露光開始までに必要な時間を返します。</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -2072,13 +2155,13 @@
                         <div class="prop_id">R</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">W</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">W</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">W</div>
                       </td>
                       <td width="20%">
                         <div class="prop_id">REAL
@@ -2089,7 +2172,17 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>内部同期モードにおいて、カメラが1秒間に出力するフレーム数を返します。</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">@ DCAMPROP_SENSORMODE__AREA, SPLITVIEW<br>センサモードがAREAまたはSPLITVIEWの時は読み取り専用です。</td>
+                    </tr>
+                    <tr>
+                      <td width="5%" class="prop_indent"></td>
+                      <td>20.035817413 to 33.276088453, step 0</td>
+                      <td colspan="6">@ DCAMPROP_SENSORMODE__PROGRESSIVE<br>INTERNALLINESPEED や INTERNAL_LINEINTERVAL の設定により、設定値や設定範囲が変化します。</td>
+                    </tr>
+                    <tr>
+                      <td width="5%" class="prop_indent"></td>
+                      <td>25.054552096 to 49.865614232, step 0</td>
+                      <td colspan="6">@ DCAMPROP_SENSORMODE__DUALLIGHTSHEET<br>INTERNALLINESPEED や INTERNAL_LINEINTERVAL の設定により、設定値や設定範囲が変化します。</td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -2102,13 +2195,13 @@
                         <div class="prop_id">R</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">W</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">W</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">W</div>
                       </td>
                       <td width="20%">
                         <div class="prop_id">REAL
@@ -2119,7 +2212,17 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>内部同期モードにおいて、2つのフレーム間の時間を返します。</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">@ DCAMPROP_SENSORMODE__AREA, SPLITVIEW<br>センサモードがAREAまたはSPLITVIEWの時は読み取り専用です。</td>
+                    </tr>
+                    <tr>
+                      <td width="5%" class="prop_indent"></td>
+                      <td>0.030051609 to 0.049910617, step 0</td>
+                      <td colspan="6">@ DCAMPROP_SENSORMODE__PROGRESSIVE<br>INTERNALLINESPEED や INTERNAL_LINEINTERVAL の設定により、設定値や設定範囲が変化します。</td>
+                    </tr>
+                    <tr>
+                      <td width="5%" class="prop_indent"></td>
+                      <td>0.020053899 to 0.039912907, step 0</td>
+                      <td colspan="6">@ DCAMPROP_SENSORMODE__DUALLIGHTSHEET<br>INTERNALLINESPEED や INTERNAL_LINEINTERVAL の設定により、設定値や設定範囲が変化します。</td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -2132,13 +2235,13 @@
                         <div class="prop_id">R</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">W</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">W</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">W</div>
                       </td>
                       <td width="20%">
                         <div class="prop_id">REAL
@@ -2149,7 +2252,12 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>センサスピードを返します。</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">@ DCAMPROP_SENSORMODE__AREA, SPLITVIEW<br>センサモードが AREA または SPLITVIEW の時は読み取り専用です。</td>
+                    </tr>
+                    <tr>
+                      <td width="5%" class="prop_indent"></td>
+                      <td>0.000065 to 0.667052469, step 0</td>
+                      <td colspan="6">@ DCAMPROP_SENSORMODE__PROGRESSIVE, DUALLIGHTSHEET</td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -2162,13 +2270,13 @@
                         <div class="prop_id">R</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">W</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">W</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">W</div>
                       </td>
                       <td width="20%">
                         <div class="prop_id">REAL
@@ -2179,7 +2287,12 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>2つのライン間の時間を返します。</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">@ DCAMPROP_SENSORMODE__AREA, SPLITVIEW<br>センサモードが AREA または SPLITVIEW の時は読み取り専用です。</td>
+                    </tr>
+                    <tr>
+                      <td width="5%" class="prop_indent"></td>
+                      <td>0.000009744 to 0.1, step 0.000000004</td>
+                      <td colspan="6">@ DCAMPROP_SENSORMODE__PROGRESSIVE, DUALLIGHTSHEET</td>
                     </tr>
                     <tr>
                       <td width="100%" colspan="8">
@@ -2278,7 +2391,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>現在のプロパティ設定における、横方向の画素数を返します。</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -2306,7 +2420,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>現在のプロパティ設定における、縦方向の画素数を返します。</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -2334,7 +2449,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>現在のプロパティ設定における、次の行にアクセスするための横一行のバイト数を返します。</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -2362,7 +2478,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>現在のプロパティ設定における、一枚の画像あたりのバイト数を返します。</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -2390,7 +2507,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>画像の最初のデータを指定するためのオフセットバイト数を返します。</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -2438,7 +2556,7 @@
                         <div class="prop_id">DCAM_IDPROP_BUFFER_ROWBYTES</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">4.0</div>
                       </td>
                       <td width="5%" align="center">
                         <div class="prop_id">R</div>
@@ -2459,14 +2577,15 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>アタッチされたバッファの横一行のバイト数を返します。</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
                         <div class="prop_id">DCAM_IDPROP_BUFFER_FRAMEBYTES</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">4.0</div>
                       </td>
                       <td width="5%" align="center">
                         <div class="prop_id">R</div>
@@ -2487,14 +2606,15 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>dcambuf_attach()関数を使用するときに確保するべきバッファのサイズを返します。</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
                         <div class="prop_id">DCAM_IDPROP_BUFFER_TOPOFFSETBYTES</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">4.0</div>
                       </td>
                       <td width="5%" align="center">
                         <div class="prop_id">R</div>
@@ -2515,14 +2635,15 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>実際の画像データの先頭に存在する不必要なデータサイズを返します。</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
                         <div class="prop_id">DCAM_IDPROP_BUFFER_PIXELTYPE</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">4.0</div>
                       </td>
                       <td width="5%" align="center">
                         <div class="prop_id">R</div>
@@ -2563,7 +2684,7 @@
                         <div class="prop_id">DCAM_IDPROP_RECORDFIXEDBYTES_PERFILE</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">4.0</div>
                       </td>
                       <td width="5%" align="center">
                         <div class="prop_id">R</div>
@@ -2584,14 +2705,15 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>1ファイルあたり必要となるデータサイズを返します。</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
                         <div class="prop_id">DCAM_IDPROP_RECORDFIXEDBYTES_PERSESSION</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">4.0</div>
                       </td>
                       <td width="5%" align="center">
                         <div class="prop_id">R</div>
@@ -2612,14 +2734,15 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>1セッションあたり必要となるデータサイズを返します。</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
                         <div class="prop_id">DCAM_IDPROP_RECORDFIXEDBYTES_PERFRAME</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">4.0</div>
                       </td>
                       <td width="5%" align="center">
                         <div class="prop_id">R</div>
@@ -2640,75 +2763,6 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>1フレームあたり必要となるデータサイズを返します。</td>
-                      <td colspan="6"></td>
-                    </tr>
-                    <tr>
-                      <td width="55%" colspan="2">
-                        <div class="prop_id">DCAM_IDPROP_TIMESTAMP_PRODUCER</div>
-                      </td>
-                      <td width="5%" align="center">
-                        <div class="prop_id">-</div>
-                      </td>
-                      <td width="5%" align="center">
-                        <div class="prop_id">R</div>
-                      </td>
-                      <td width="5%" align="center">
-                        <div class="prop_id">-</div>
-                      </td>
-                      <td width="5%" align="center">
-                        <div class="prop_id">-</div>
-                      </td>
-                      <td width="5%" align="center">
-                        <div class="prop_id">-</div>
-                      </td>
-                      <td width="20%">
-                        <div class="prop_id">MODE</div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td width="5%" class="prop_indent"></td>
-                      <td>DCAMPROP_TIMESTAMP_PRODUCER__DCAMMODULE</td>
-                      <td colspan="6">
-                      </td>
-                    </tr>
-                    <tr>
-                      <td width="5%" class="prop_indent"></td>
-                      <td>DCAMPROP_TIMESTAMP_PRODUCER__IMAGINGDEVICE</td>
-                      <td colspan="6">
-                      </td>
-                    </tr>
-                    <tr>
-                      <td width="55%" colspan="2">
-                        <div class="prop_id">DCAM_IDPROP_FRAMESTAMP_PRODUCER</div>
-                      </td>
-                      <td width="5%" align="center">
-                        <div class="prop_id">-</div>
-                      </td>
-                      <td width="5%" align="center">
-                        <div class="prop_id">R</div>
-                      </td>
-                      <td width="5%" align="center">
-                        <div class="prop_id">-</div>
-                      </td>
-                      <td width="5%" align="center">
-                        <div class="prop_id">-</div>
-                      </td>
-                      <td width="5%" align="center">
-                        <div class="prop_id">-</div>
-                      </td>
-                      <td width="20%">
-                        <div class="prop_id">MODE</div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td width="5%" class="prop_indent"></td>
-                      <td>DCAMPROP_FRAMESTAMP_PRODUCER__DCAMMODULE</td>
-                      <td colspan="6">
-                      </td>
-                    </tr>
-                    <tr>
-                      <td width="5%" class="prop_indent"></td>
-                      <td>DCAMPROP_FRAMESTAMP_PRODUCER__IMAGINGDEVICE</td>
                       <td colspan="6">
                       </td>
                     </tr>
@@ -2773,7 +2827,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>現在の変換係数の係数値を返します。</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -2801,7 +2856,8 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>現在の変換係数のオフセット値を返します。</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
@@ -2829,14 +2885,15 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>ビューの数を返します。</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
                         <div class="prop_id">DCAM_IDPROP_IMAGEDETECTOR_PIXELWIDTH</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">4.0</div>
                       </td>
                       <td width="5%" align="center">
                         <div class="prop_id">R</div>
@@ -2858,15 +2915,16 @@
                     </tr>
                     <tr>
                       <td width="5%" class="prop_indent"></td>
-                      <td>return 6.500000</td>
-                      <td colspan="6"></td>
+                      <td>return 6.5</td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
                         <div class="prop_id">DCAM_IDPROP_IMAGEDETECTOR_PIXELHEIGHT</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">4.0</div>
                       </td>
                       <td width="5%" align="center">
                         <div class="prop_id">R</div>
@@ -2888,15 +2946,16 @@
                     </tr>
                     <tr>
                       <td width="5%" class="prop_indent"></td>
-                      <td>return 6.500000</td>
-                      <td colspan="6"></td>
+                      <td>return 6.5</td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
                         <div class="prop_id">DCAM_IDPROP_IMAGEDETECTOR_PIXELNUMHORZ</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">4.0</div>
                       </td>
                       <td width="5%" align="center">
                         <div class="prop_id">R</div>
@@ -2917,14 +2976,15 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return 2048</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                     <tr>
                       <td width="55%" colspan="2">
                         <div class="prop_id">DCAM_IDPROP_IMAGEDETECTOR_PIXELNUMVERT</div>
                       </td>
                       <td width="5%" align="center">
-                        <div class="prop_id">-</div>
+                        <div class="prop_id">4.0</div>
                       </td>
                       <td width="5%" align="center">
                         <div class="prop_id">R</div>
@@ -2945,7 +3005,78 @@
                     <tr>
                       <td width="5%" class="prop_indent"></td>
                       <td>return 2048</td>
-                      <td colspan="6"></td>
+                      <td colspan="6">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td width="55%" colspan="2">
+                        <div class="prop_id">DCAM_IDPROP_TIMESTAMP_PRODUCER</div>
+                      </td>
+                      <td width="5%" align="center">
+                        <div class="prop_id">4.0</div>
+                      </td>
+                      <td width="5%" align="center">
+                        <div class="prop_id">R</div>
+                      </td>
+                      <td width="5%" align="center">
+                        <div class="prop_id">-</div>
+                      </td>
+                      <td width="5%" align="center">
+                        <div class="prop_id">-</div>
+                      </td>
+                      <td width="5%" align="center">
+                        <div class="prop_id">-</div>
+                      </td>
+                      <td width="20%">
+                        <div class="prop_id">MODE</div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td width="5%" class="prop_indent"></td>
+                      <td>DCAMPROP_TIMESTAMP_PRODUCER__DCAMMODULE</td>
+                      <td colspan="6">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td width="5%" class="prop_indent"></td>
+                      <td>DCAMPROP_TIMESTAMP_PRODUCER__IMAGINGDEVICE</td>
+                      <td colspan="6">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td width="55%" colspan="2">
+                        <div class="prop_id">DCAM_IDPROP_FRAMESTAMP_PRODUCER</div>
+                      </td>
+                      <td width="5%" align="center">
+                        <div class="prop_id">4.0</div>
+                      </td>
+                      <td width="5%" align="center">
+                        <div class="prop_id">R</div>
+                      </td>
+                      <td width="5%" align="center">
+                        <div class="prop_id">-</div>
+                      </td>
+                      <td width="5%" align="center">
+                        <div class="prop_id">-</div>
+                      </td>
+                      <td width="5%" align="center">
+                        <div class="prop_id">-</div>
+                      </td>
+                      <td width="20%">
+                        <div class="prop_id">MODE</div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td width="5%" class="prop_indent"></td>
+                      <td>DCAMPROP_FRAMESTAMP_PRODUCER__DCAMMODULE</td>
+                      <td colspan="6">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td width="5%" class="prop_indent"></td>
+                      <td>DCAMPROP_FRAMESTAMP_PRODUCER__IMAGINGDEVICE</td>
+                      <td colspan="6">
+                      </td>
                     </tr>
                   </table>
 
