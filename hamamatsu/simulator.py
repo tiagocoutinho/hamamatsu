@@ -43,7 +43,7 @@ import inspect
 import datetime
 import collections
 
-from sinstruments.simulator import BaseDevice
+from sinstruments.simulator import BaseDevice, main
 
 
 cmd_re = re.compile("(?P<name>\w+)\((?P<args>.*)\)")
@@ -576,6 +576,4 @@ class RemoteEx(BaseDevice):
 
 
 if __name__ == "__main__":
-    from sinstruments.simulator import main
-
     main()
