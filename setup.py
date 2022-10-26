@@ -55,8 +55,8 @@ setup(
     python_requires=">=3.7",
     entry_points={
         'console_scripts': [
-            'hamamatsu-simulator = hamamatsu.simulator [simulator]',
-            'hamamatsu-lima = hamamatsu.lima [Lima]',
+            'hamamatsu-simulator = hamamatsu.simulator:main [simulator]',
+            'hamamatsu-lima = hamamatsu.lima.cli:hamamatsu [lima]',
         ],
         "Lima_camera": [
             "Hamamatsu=hamamatsu.lima.camera"
