@@ -20,7 +20,7 @@ From within your favorite python environment type:
 ```python
 
 import logging
-from hamamatsu.dcam import dcam, Stream
+from hamamatsu.dcam import copy_frame, dcam, Stream
 
 logging.basicConfig(level=logging.INFO)
 
