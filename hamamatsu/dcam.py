@@ -1431,7 +1431,7 @@ def copy_frame(frame, into=None):
     dtype = pixel_type.dtype()
     if dtype:
         into.dtype = dtype
-        into.shape = frame.width, frame.height
+        into.shape = frame.height, frame.width  # numpy array shapes have y-size first
     return into
 
 
